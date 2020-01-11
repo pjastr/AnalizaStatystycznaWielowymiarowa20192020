@@ -1,0 +1,1 @@
+# AnalizaStatystycznaWielowymiarowa20192020
