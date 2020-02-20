@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Dzień 1 - Model liniowy</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Analiza statystyczna wielowymiarowa</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Strona główna</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Dzień 1
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="sprawyorganizacyjne.html">Sprawy organizacyjne</a>
+    </li>
+    <li>
+      <a href="regresjawielowymiarowa.html">Regresja wielowymiarowa</a>
+    </li>
+    <li>
+      <a href="modelliniowy.html">Model liniowy</a>
+    </li>
+    <li>
+      <a href="modelliniowycw.html">Model liniowy - ćw.</a>
+    </li>
+    <li>
+      <a href="modelliniowygrafika.html">Model liniowy - grafika</a>
+    </li>
+    <li>
+      <a href="modelliniowyprognozowanie.html">Model liniowy - prognozowanie</a>
+    </li>
+    <li>
+      <a href="alternatywnemodeleliniowe.html">Alternatywne modele liniowe</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Dzień 1 - Model liniowy</h1>
+
+</div>
+
+
+<style type="text/css">
+.title {
+  display: none;
+}
+
+.table {
+    width:70%;
+}
+
+#getting-started img {
+  margin-right: 10px;
+}
+
+</style>
+<div id="model-liniowy" class="section level1">
+<h1>Model liniowy</h1>
+<p>Rozważamy wpływ zbioru <span class="math inline">\(k\)</span> zmiennych <span class="math inline">\(X_1, \ldots, X_k\)</span> na zmienną <span class="math inline">\(Y\)</span>. Należy wprowadzić do modelu jak największą liczbę zmiennych niezależnych oraz powinny się w nim znaleźć zmienne silnie skorelowane ze zmienną zależną i jednocześnie jak najsłabiej skorelowane między sobą.</p>
+<p>Liniowy model regresji wielowymiarowej:</p>
+<p><span class="math display">\[Y=\beta_0 +\beta_1\cdot X_1+\beta_2\cdot X_2+\ldots+\beta_k\cdot X_k+\varepsilon.\]</span> <span class="math inline">\(\beta_i\)</span> - współczynniki regresji (parametry modelu) opisujące wpływ <span class="math inline">\(i\)</span>-tej zmiennej. <span class="math inline">\(\varepsilon\)</span> - składnik losowy.</p>
+<p>Załadujmy pakiety i pewną ramkę danych:</p>
+<pre class="r"><code>library(tidyverse)
+devtools::install_github(&quot;kassambara/datarium&quot;)
+data(&quot;marketing&quot;, package = &quot;datarium&quot;)</code></pre>
+<pre class="r"><code>head(marketing)</code></pre>
+<pre><code>##   youtube facebook newspaper sales
+## 1  276.12    45.36     83.04 26.52
+## 2   53.40    47.16     54.12 12.48
+## 3   20.64    55.08     83.16 11.16
+## 4  181.80    49.56     70.20 22.20
+## 5  216.96    12.96     70.08 15.48
+## 6   10.44    58.68     90.00  8.64</code></pre>
+<p>Ramka <code>marketing</code> opisuje wydatki na reklamę w poszczególnych mediach oraz zyski ze sprzedaży. Naszym celem zbadanie wpływu wydatków na wyniki sprzedaży.</p>
+<p>Sprawdźmy co otrzymamy w R:</p>
+<pre class="r"><code>model &lt;- lm(sales ~ youtube + facebook + newspaper, data = marketing)
+final&lt;-summary(model)
+final</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = sales ~ youtube + facebook + newspaper, data = marketing)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -10.5932  -1.0690   0.2902   1.4272   3.3951 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  3.526667   0.374290   9.422   &lt;2e-16 ***
+## youtube      0.045765   0.001395  32.809   &lt;2e-16 ***
+## facebook     0.188530   0.008611  21.893   &lt;2e-16 ***
+## newspaper   -0.001037   0.005871  -0.177     0.86    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.023 on 196 degrees of freedom
+## Multiple R-squared:  0.8972, Adjusted R-squared:  0.8956 
+## F-statistic: 570.3 on 3 and 196 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>Widok w RStudio:</p>
+<p><img src="lm.png" /></p>
+<p>Strona w dokumentacji o funkcji <code>lm</code> - <a href="https://www.rdocumentation.org/packages/stats/versions/3.5.2/topics/lm">link</a>.</p>
+<p><img src="summarylm.png" /></p>
+<p>Sprawdźmy typ:</p>
+<pre class="r"><code>class(model)</code></pre>
+<pre><code>## [1] &quot;lm&quot;</code></pre>
+<pre class="r"><code>class(final)</code></pre>
+<pre><code>## [1] &quot;summary.lm&quot;</code></pre>
+<div id="współczynniki-w-modelu" class="section level2">
+<h2>Współczynniki w modelu</h2>
+<p>Zapiszmy nasz model w postaci:</p>
+<p><span class="math display">\[ y = X\beta + \varepsilon,\]</span> gdzie: <span class="math display">\[y = \begin{bmatrix}
+y_1 \\ y_2 \\ \vdots \\ y_n
+\end{bmatrix}, \quad  {X}=\begin{bmatrix}
+X_{10} &amp; X_{11} &amp; X_{12} &amp; \cdots &amp; X_{1p} \\
+X_{20} &amp; X_{21} &amp; X_{22} &amp; \cdots &amp; X_{2p} \\
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+X_{n0} &amp;X_{n1} &amp; X_{n2} &amp; \cdots &amp; X_{np}
+\end{bmatrix} ,
+\quad  \beta = \begin{bmatrix}
+\beta_0 \\ \beta_1 \\ \vdots \\ \beta_p \end{bmatrix}, \quad \varepsilon = \begin{bmatrix}
+\varepsilon_1 \\ \varepsilon_2 \\ \vdots \\ \varepsilon_n
+\end{bmatrix}\]</span></p>
+<p>Na mocy konwencji <span class="math inline">\(x_{i0} = 1\)</span> dla wszystkich <span class="math inline">\(i = 1, \ldots, n\)</span>. Wtedy <span class="math inline">\(\beta_0\)</span> jest wyrazem wolnym. Możemy też zapisać następująco: <span class="math display">\[y_i = \beta_0 +X_{i1}\beta_1+X_{i2}\beta_2+\ldots+X_{ip}\beta_p+\varepsilon_i, \quad i=1,\ldots, n.\]</span></p>
+<p>Zazwyczaj taki układ równań nie ma rozwiązania. Naszym zadaniem jest znalezienie możliwych wektorów <span class="math inline">\(\beta\)</span>, które “dają najlepsze dopasowanie”. Innymi słowy, musimy “matematycznie” rozwiązać problem znalezienia <span class="math display">\[\hat{\beta}=\underset{\beta}{\operatorname{arg\,min}}\,S(\beta), \]</span> <span class="math display">\[S(\beta) = \sum_{i=1}^n \bigl| y_i - \sum_{j=0}^p X_{ij}\beta_j\bigr|^2 = \bigl\| y -  X  \beta \bigr\|^2.\]</span> Rozwiązaniem jest: <span class="math display">\[\hat{\beta}= ( X^T X )^{-1}  X^T  y.\]</span></p>
+<p>Dowód: <a href="https://en.wikipedia.org/wiki/Ordinary_least_squares">wiki</a> lub dowolny “dobry” podręcznik do zaawansowanej analizy matematycznej lub/i statystyki.</p>
+<p>Jak to policzyć dla ramki <code>marketing</code>?</p>
+<pre class="r"><code>x&lt;-cbind(rep(1,200),as.matrix(marketing[,c(1,2,3)]))
+y&lt;-as.matrix(marketing[,c(4)])
+betah = solve(t(x) %*% x) %*% (t(x) %*% y)
+betah</code></pre>
+<pre><code>##                   [,1]
+##            3.526667243
+## youtube    0.045764645
+## facebook   0.188530017
+## newspaper -0.001037493</code></pre>
+<pre class="r"><code>model$coefficients</code></pre>
+<pre><code>##  (Intercept)      youtube     facebook    newspaper 
+##  3.526667243  0.045764645  0.188530017 -0.001037493</code></pre>
+<pre class="r"><code>summary(model)$coefficients[,1]</code></pre>
+<pre><code>##  (Intercept)      youtube     facebook    newspaper 
+##  3.526667243  0.045764645  0.188530017 -0.001037493</code></pre>
+<pre class="r"><code>coef(model)</code></pre>
+<pre><code>##  (Intercept)      youtube     facebook    newspaper 
+##  3.526667243  0.045764645  0.188530017 -0.001037493</code></pre>
+<pre class="r"><code>betah-model$coefficients</code></pre>
+<pre><code>##                    [,1]
+##           -6.838974e-14
+## youtube    2.428613e-16
+## facebook  -3.885781e-16
+## newspaper  5.861197e-16</code></pre>
+</div>
+<div id="odchylenie-standardowe-regresji" class="section level2">
+<h2>Odchylenie standardowe regresji</h2>
+<p>Dopasowane wartości (przewidywane wartości) - wartości otrzymane poprzez model: <span class="math display">\[\hat{y}=X\hat{\beta}=Py, \quad P=X(X^TX)^{-1}X^T.\]</span> Zróbmy to w R:</p>
+<pre class="r"><code>yh&lt;-x %*% betah
+p&lt;-x %*%  solve(t(x) %*% x) %*% t(x)
+yh2&lt;- p %*% y
+yh3&lt;-model$fitted.values
+head(cbind(yh,yh2,yh3))</code></pre>
+<pre><code>##                          yh3
+## 1 24.62877 24.62877 24.62877
+## 2 14.80543 14.80543 14.80543
+## 3 14.76920 14.76920 14.76920
+## 4 21.11740 21.11740 21.11740
+## 5 15.82641 15.82641 15.82641
+## 6 14.97402 14.97402 14.97402</code></pre>
+<p>Zauważmy, że <span class="math inline">\(PX=X\)</span> oraz <span class="math inline">\(PX-X=0\)</span>. Niech <span class="math inline">\(M=I_n-P\)</span>. Wtedy <span class="math inline">\(MX=0\)</span>. Macierz <span class="math inline">\(M\)</span> nazywamy macierzą anihilującą.</p>
+<p>W R mamy:</p>
+<pre class="r"><code>head(p %*% x)</code></pre>
+<pre><code>##        youtube facebook newspaper
+## [1,] 1  276.12    45.36     83.04
+## [2,] 1   53.40    47.16     54.12
+## [3,] 1   20.64    55.08     83.16
+## [4,] 1  181.80    49.56     70.20
+## [5,] 1  216.96    12.96     70.08
+## [6,] 1   10.44    58.68     90.00</code></pre>
+<pre class="r"><code>head(x)</code></pre>
+<pre><code>##        youtube facebook newspaper
+## [1,] 1  276.12    45.36     83.04
+## [2,] 1   53.40    47.16     54.12
+## [3,] 1   20.64    55.08     83.16
+## [4,] 1  181.80    49.56     70.20
+## [5,] 1  216.96    12.96     70.08
+## [6,] 1   10.44    58.68     90.00</code></pre>
+<pre class="r"><code>m&lt;-diag(200)-p
+head(m %*% x)</code></pre>
+<pre><code>##                          youtube      facebook    newspaper
+## [1,] -1.882175e-16 -1.170453e-13 -2.310565e-14 5.541834e-14
+## [2,]  2.740863e-16  4.223288e-13 -4.801715e-15 4.510281e-15
+## [3,] -1.526557e-15  2.353673e-13 -4.754530e-14 1.862399e-14
+## [4,] -2.359224e-16  2.091660e-13 -1.249001e-15 4.567874e-14
+## [5,]  1.023487e-16 -3.175238e-14 -2.490369e-14 7.316370e-14
+## [6,] -1.242062e-15  3.108624e-13 -3.716472e-14 5.159762e-14</code></pre>
+<p>Teraz możemy obliczyć reszty (residua):</p>
+<p><span class="math display">\[ \hat{\varepsilon} = y - \hat{y} = y - X\hat{\beta} = My = M(X\beta+\varepsilon) = (MX)\beta + M\varepsilon = M\varepsilon.\]</span> W R wygląda to następująco:</p>
+<pre class="r"><code>eh&lt;-y-yh
+head(eh)</code></pre>
+<pre><code>##            [,1]
+## [1,]  1.8912307
+## [2,] -2.3254258
+## [3,] -3.6092049
+## [4,]  1.0826046
+## [5,] -0.3464062
+## [6,] -6.3340172</code></pre>
+<pre class="r"><code>quantile(eh)</code></pre>
+<pre><code>##          0%         25%         50%         75%        100% 
+## -10.5932245  -1.0689763   0.2901621   1.4271824   3.3950671</code></pre>
+<pre class="r"><code>quantile(model$residuals)</code></pre>
+<pre><code>##          0%         25%         50%         75%        100% 
+## -10.5932245  -1.0689763   0.2901621   1.4271824   3.3950671</code></pre>
+<pre class="r"><code>quantile(summary(model)$residuals)</code></pre>
+<pre><code>##          0%         25%         50%         75%        100% 
+## -10.5932245  -1.0689763   0.2901621   1.4271824   3.3950671</code></pre>
+<p>Dzięki resztom możemy estymować wariancję:</p>
+<p><span class="math display">\[s^2 = \frac{\hat{\varepsilon} ^T \hat{\varepsilon}}{n-p} = \frac{(My)^T My}{n-p} = \frac{y^T M^TMy}{n-p}= \frac{y ^T My}{n-p} = \frac{S(\hat{\beta})}{n-p},\quad
+    \hat\sigma^2 = \frac{n-p}{n}\;s^2\]</span> U nas <span class="math inline">\(n=200\)</span> i <span class="math inline">\(p=4\)</span> (liczba zmiennych plus 1 zgodnie z konwencją). Liczba <span class="math inline">\(n-p\)</span> odpowiada “w ujęciu statystycznym” liczbie stopni swobody.</p>
+<p>W R mamy:</p>
+<pre class="r"><code>s2&lt;- t(eh) %*% eh /196
+s2&lt;-as.numeric(s2)
+sqrt(s2)</code></pre>
+<pre><code>## [1] 2.022612</code></pre>
+<pre class="r"><code>sigmah2&lt;-196/200*s2
+sqrt(sigmah2)</code></pre>
+<pre><code>## [1] 2.002284</code></pre>
+<p><em><span class="math inline">\(s^2\)</span> jest nieobciążonym estymatorem wariancji przy użyciu metody najmniejszych kwadratów. <span class="math inline">\(\hat{\sigma}^2\)</span> jest obciążonym estymatorem wariancji przy użyciu metody najmniejszej wiarygodności. Częściej jest używane <span class="math inline">\(s^2\)</span>.</em></p>
+<pre class="r"><code>summary(model)$sigma</code></pre>
+<pre><code>## [1] 2.022612</code></pre>
+<p><span class="math inline">\(s^2\)</span> nazywa się odchyleniem standardowym składnika resztowego, błędem standardowym regresji, odchyleniem standardowym regresji…</p>
+</div>
+<div id="dobroć-dopasowania" class="section level2">
+<h2>“Dobroć” dopasowania</h2>
+<p>Współczynnik determinacji:</p>
+<p><span class="math display">\[ R^2 = \frac{\sum(\hat{y}_i-\overline{y})^2}{\sum(y_i-\overline{y})^2} = \frac{y ^T P ^T LPy}{y ^T Ly} = 1 - \frac{y^T My}{y^T Ly} = 1 - \frac{ SSR}{SST} = \frac{SSM}{SST},\]</span> gdzie <span class="math inline">\(L=I_n - \mathbf{1}\mathbf{1}^T/n\)</span>, a <span class="math inline">\(\mathbf{1}\)</span> to macierz wymiaru <span class="math inline">\(n\times 1\)</span> składająca się z samych jedynek. <span class="math inline">\(SST\)</span> - całkowita (totalna) suma kwadratów, <span class="math inline">\(SSR\)</span> - suma kwadratów reszt (błędów), <span class="math inline">\(SSM\)</span> - skorygowana suma kwadratów dla modelu.</p>
+<p>W R mamy:</p>
+<pre class="r"><code>ym=mean(y)
+ssm&lt;-sum((yh-ym)^2)
+sst&lt;-sum((y-ym)^2)
+r2&lt;-ssm/sst
+r2</code></pre>
+<pre><code>## [1] 0.8972106</code></pre>
+<pre class="r"><code>one&lt;-matrix( rep( 1, len=200), nrow = 200)
+l&lt;-diag(200)- one %*% t(one) /200
+t(y) %*% t(p) %*% l %*% p %*% y / (t(y) %*% l %*% y)</code></pre>
+<pre><code>##           [,1]
+## [1,] 0.8972106</code></pre>
+<pre class="r"><code>1- t(y) %*% m %*% y /(t(y) %*% l %*% y)</code></pre>
+<pre><code>##           [,1]
+## [1,] 0.8972106</code></pre>
+<pre class="r"><code>summary(model)$r.squared</code></pre>
+<pre><code>## [1] 0.8972106</code></pre>
+<p>Skorygowany współczynnik determinacji:</p>
+<p><span class="math display">\[\overline{R}^2=1 - (1 - R^2) \frac{n - 1}{n - p}\]</span> W R mamy:</p>
+<pre class="r"><code>ro2&lt;-1-((1-r2)*(199/196))
+ro2</code></pre>
+<pre><code>## [1] 0.8956373</code></pre>
+<pre class="r"><code>summary(model)$adj.r.squared</code></pre>
+<pre><code>## [1] 0.8956373</code></pre>
+</div>
+<div id="f-test" class="section level2">
+<h2>F-test</h2>
+<p>Powtórzmy i wprowadźmy nowe oznaczenia:</p>
+<ul>
+<li><span class="math inline">\(n\)</span> - liczba obserwacji</li>
+<li><span class="math inline">\(p\)</span> - liczba parametrów regresji (w modelu liniowym to liczba zmiennych objaśniających+1 zgodnie z konwencją)</li>
+<li><span class="math inline">\(SSM\)</span> - skorygowana suma kwadratów modelu <span class="math display">\[SSM=\sum_{i=1}^n ( \hat{y}_i-\overline{y} )^2\]</span></li>
+</ul>
+<pre class="r"><code>ssm&lt;-sum((yh-ym)^2)
+ssm</code></pre>
+<pre><code>## [1] 6998.866</code></pre>
+<ul>
+<li><span class="math inline">\(SSR \ (SSE)\)</span> - suma kwadratów reszt, błędów</li>
+</ul>
+<p><span class="math display">\[SSR=\sum_{i=1}^n ( y_i-\hat{y}_i )^2\]</span></p>
+<pre class="r"><code>ssr&lt;-sum((y-yh)^2)
+ssr</code></pre>
+<pre><code>## [1] 801.8284</code></pre>
+<ul>
+<li><span class="math inline">\(SST\)</span> - skorygowana totalna (całkowita) suma kwadratów</li>
+</ul>
+<p><span class="math display">\[ SST = \sum_{i=1}^n ( y_i-\overline{y} )^2\]</span></p>
+<pre class="r"><code>sst&lt;-sum((y-ym)^2)
+sst</code></pre>
+<pre><code>## [1] 7800.694</code></pre>
+<p>Zachodzi równość: <span class="math display">\[SSM+SSR=SST\]</span></p>
+<pre class="r"><code>ssm+ssr</code></pre>
+<pre><code>## [1] 7800.694</code></pre>
+<ul>
+<li><span class="math inline">\(DFM\)</span> - skorygowane stopnie swobody modelu (u nas w modelu liniowym liczba zmiennych objaśniających), <span class="math inline">\(DFM=p-1\)</span></li>
+<li><span class="math inline">\(DFE\)</span> - stopnie swobody błędu, <span class="math inline">\(DFE=n-p\)</span></li>
+<li><span class="math inline">\(DFT\)</span> - skorygowane totalne (całkowite) stopnie swobody, <span class="math inline">\(DFT=n-1\)</span></li>
+</ul>
+<p>Zachodzi: <span class="math display">\[DFM + DFE = DFT.\]</span></p>
+<ul>
+<li><span class="math inline">\(MSM\)</span> - średnia kwadratów modelu, <span class="math inline">\(MSM = SSM / DFM\)</span></li>
+</ul>
+<pre class="r"><code>msm&lt;-ssm/3
+msm</code></pre>
+<pre><code>## [1] 2332.955</code></pre>
+<ul>
+<li><span class="math inline">\(MSE\)</span> - średnia kwadratów błędów, <span class="math inline">\(MSE = SSR / DFE\)</span></li>
+</ul>
+<pre class="r"><code>mse&lt;-ssr/196
+mse</code></pre>
+<pre><code>## [1] 4.090961</code></pre>
+<ul>
+<li><span class="math inline">\(MST\)</span> - totalna (całkowita) średnia kwadratów, <span class="math inline">\(MST = SST / DFT\)</span></li>
+</ul>
+<pre class="r"><code>mst&lt;-sst/199
+mst</code></pre>
+<pre><code>## [1] 39.19947</code></pre>
+<p><strong>F-test dla regresji wielowymiarowej</strong></p>
+<p><span class="math display">\[H_0: \qquad   \beta_1 = \beta_2 = \ldots = \beta_{p-1} = 0\]</span></p>
+<p><span class="math display">\[H_1: \qquad  \beta_j \neq 0 \ \mathrm{dla \ co \ najmniej \ jednego} \ j.\]</span> Wyliczamy statystykę:</p>
+<p><span class="math display">\[F=\frac{MSM}{MSE} = \frac{\mathrm{&quot;wyjaśniona \ wariancja&quot;}}{\mathrm{&quot;niewyjaśniona \ wariancja&quot;}} \]</span></p>
+<pre class="r"><code>f&lt;-msm/mse
+f</code></pre>
+<pre><code>## [1] 570.2707</code></pre>
+<pre class="r"><code>summary(model)$fstatistic</code></pre>
+<pre><code>##    value    numdf    dendf 
+## 570.2707   3.0000 196.0000</code></pre>
+<p>Statystyka ta podlega rozkładowi F-Snedecora z <span class="math inline">\(p-1\)</span> i <span class="math inline">\(n-p\)</span> stopniami swobody. Ustalamy <span class="math inline">\(\alpha=0,05\)</span>.</p>
+<pre class="r"><code>qf(0.95, 3, 196)</code></pre>
+<pre><code>## [1] 2.650677</code></pre>
+<p>Jeśli wartość statystyki jest większa kwantylowi, odrzucamy hipotezę zerową. W przeciwnym wypadku przyjmujemy hipotezę zerową.</p>
+<p>W naszym wypadku odrzucamy hipotezę zerową. Innymi słowy, odrzucamy hipotezę że wydatki na reklamy na poszczególne media nie mają wpływu na sprzedaż.</p>
+<p>Obliczmy wartość <span class="math inline">\(p\)</span>:</p>
+<pre class="r"><code>p&lt;-1-pf(f, 3,196)
+p</code></pre>
+<pre><code>## [1] 0</code></pre>
+<pre class="r"><code>fstat&lt;-summary(model)$fstatistic 
+1-pf(fstat[1], fstat[2],fstat[3])</code></pre>
+<pre><code>## value 
+##     0</code></pre>
+<p>W naszym wypadku jest to “bliskie” zeru, więc możemy przyjąć, że się zgadza.</p>
+<p>Jeśli <span class="math inline">\(p\leqslant \alpha\)</span> odrzucamy <span class="math inline">\(H_0\)</span> przyjmując <span class="math inline">\(H_1\)</span>. W przeciwnym wypadku nie ma podstaw by odrzucić <span class="math inline">\(H_0\)</span>.</p>
+</div>
+<div id="t-test" class="section level2">
+<h2>t-test</h2>
+<p>Przypomnijmy, że <span class="math display">\[\hat{\beta}= ( X^T X )^{-1}  X^T  y.\]</span></p>
+<p>Wariancja wektora współczynników: <span class="math display">\[\operatorname(VAR) (\hat{\beta}) = \sigma^2 (X^TX)^{-1}.\]</span> Zamieniając na estymator nieobciążony: <span class="math display">\[\widehat{\operatorname(VAR)}(\hat{\beta}) = s^2 (X^TX)^{-1} \]</span> By otrzymać odchylenie standardowe poszczególnych współczynników, wybieramy elementy na głównej przekątnej ostatniej macierzy i potem je pierwiastkujemy.</p>
+<pre class="r"><code>v&lt;-s2 * solve(t(x) %*% x)
+v</code></pre>
+<pre><code>##                               youtube      facebook     newspaper
+##            0.1400929170 -3.188728e-04 -1.338587e-03 -7.092255e-04
+## youtube   -0.0003188728  1.945737e-06 -4.470395e-07 -3.265950e-07
+## facebook  -0.0013385874 -4.470395e-07  7.415335e-05 -1.780062e-05
+## newspaper -0.0007092255 -3.265950e-07 -1.780062e-05  3.446875e-05</code></pre>
+<pre class="r"><code>vcov(model)</code></pre>
+<pre><code>##               (Intercept)       youtube      facebook     newspaper
+## (Intercept)  0.1400929170 -3.188728e-04 -1.338587e-03 -7.092255e-04
+## youtube     -0.0003188728  1.945737e-06 -4.470395e-07 -3.265950e-07
+## facebook    -0.0013385874 -4.470395e-07  7.415335e-05 -1.780062e-05
+## newspaper   -0.0007092255 -3.265950e-07 -1.780062e-05  3.446875e-05</code></pre>
+<pre class="r"><code>varbeta&lt;-sqrt(diag(v))
+sqrt(diag(vcov(model)))</code></pre>
+<pre><code>## (Intercept)     youtube    facebook   newspaper 
+## 0.374289884 0.001394897 0.008611234 0.005871010</code></pre>
+<pre class="r"><code>summary(model)$coefficients[,2]</code></pre>
+<pre><code>## (Intercept)     youtube    facebook   newspaper 
+## 0.374289884 0.001394897 0.008611234 0.005871010</code></pre>
+<p>Statystykę <span class="math inline">\(t\)</span> określamy następująco: <span class="math display">\[t=\frac{\hat{\beta}}{\widehat{\operatorname(VAR)}(\hat{\beta})}\]</span></p>
+<pre class="r"><code>tstat&lt;-betah/varbeta
+tstat</code></pre>
+<pre><code>##                 [,1]
+##            9.4222884
+## youtube   32.8086244
+## facebook  21.8934961
+## newspaper -0.1767146</code></pre>
+<pre class="r"><code>summary(model)$coefficients[,3]</code></pre>
+<pre><code>## (Intercept)     youtube    facebook   newspaper 
+##   9.4222884  32.8086244  21.8934961  -0.1767146</code></pre>
+<p>Na koniec liczymy odpowiednie prawdopodobieństwo (liczba stopni swobody to <span class="math inline">\(n-p\)</span>):</p>
+<pre class="r"><code>2 * pt(abs(tstat), 196, lower.tail = FALSE)</code></pre>
+<pre><code>##                   [,1]
+##           1.267295e-17
+## youtube   1.509960e-81
+## facebook  1.505339e-54
+## newspaper 8.599151e-01</code></pre>
+<pre class="r"><code>summary(model)$coefficients[,4]</code></pre>
+<pre><code>##  (Intercept)      youtube     facebook    newspaper 
+## 1.267295e-17 1.509960e-81 1.505339e-54 8.599151e-01</code></pre>
+<p>Test <span class="math inline">\(t\)</span> pozwala zweryfikować istotność oszacowania parametru dla każdej ze zmiennej objaśniającej. <span class="math display">\[H_0: \qquad \beta_i=0\]</span> <span class="math display">\[H_1: \qquad \beta_i\neq 0\]</span></p>
+<p>Jeśli prawdopodobieństwo jest mniejsze niż poziom ufności (domyślnie <span class="math inline">\(\alpha=0,05\)</span>) to odrzucamy <span class="math inline">\(H_0\)</span> na rzecz <span class="math inline">\(H_1\)</span> (odpowiednia zmienna objaśniająca ma wpływ na zmienną objaśnianą). W przeciwnym wypadku nie mamy podstaw do odrzucenia <span class="math inline">\(H_0\)</span> (brak wpływu).</p>
+<p>W rozważanym przykładzie jedynie w przypadku zmiennej <code>newspaper</code> przyjmujemy <span class="math inline">\(H_0\)</span>. Nie jest zatem znacząca w modelu regresji wielokrotnej. Oznacza to, że w przypadku ustalonej kwoty budżetu reklamowego <code>youtube</code> i <code>facebook</code> zmiany w budżecie reklamowym newspaper nie wpłyną znacząco na wyniki sprzedaży. Możemy zatem zmienną <code>newspaper</code> usunąć z modelu:</p>
+<pre class="r"><code>model2  &lt;- lm(sales ~ youtube + facebook, data = marketing)
+summary(model2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = sales ~ youtube + facebook, data = marketing)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -10.5572  -1.0502   0.2906   1.4049   3.3994 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  3.50532    0.35339   9.919   &lt;2e-16 ***
+## youtube      0.04575    0.00139  32.909   &lt;2e-16 ***
+## facebook     0.18799    0.00804  23.382   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.018 on 197 degrees of freedom
+## Multiple R-squared:  0.8972, Adjusted R-squared:  0.8962 
+## F-statistic: 859.6 on 2 and 197 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<div id="inne-zapisy" class="section level1">
+<h1>Inne zapisy</h1>
+<p>W R możemy wywołać modele nieco inną składnią:</p>
+<pre class="r"><code>model3 &lt;- lm(sales ~., data = marketing)
+summary(model3)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = sales ~ ., data = marketing)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -10.5932  -1.0690   0.2902   1.4272   3.3951 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  3.526667   0.374290   9.422   &lt;2e-16 ***
+## youtube      0.045765   0.001395  32.809   &lt;2e-16 ***
+## facebook     0.188530   0.008611  21.893   &lt;2e-16 ***
+## newspaper   -0.001037   0.005871  -0.177     0.86    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.023 on 196 degrees of freedom
+## Multiple R-squared:  0.8972, Adjusted R-squared:  0.8956 
+## F-statistic: 570.3 on 3 and 196 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>model4 &lt;- lm(sales ~. -newspaper, data = marketing)
+summary(model4)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = sales ~ . - newspaper, data = marketing)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -10.5572  -1.0502   0.2906   1.4049   3.3994 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  3.50532    0.35339   9.919   &lt;2e-16 ***
+## youtube      0.04575    0.00139  32.909   &lt;2e-16 ***
+## facebook     0.18799    0.00804  23.382   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.018 on 197 degrees of freedom
+## Multiple R-squared:  0.8972, Adjusted R-squared:  0.8962 
+## F-statistic: 859.6 on 2 and 197 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>model5 &lt;- lm(marketing$sales~ marketing$youtube + marketing$facebook)
+summary(model5)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = marketing$sales ~ marketing$youtube + marketing$facebook)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -10.5572  -1.0502   0.2906   1.4049   3.3994 
+## 
+## Coefficients:
+##                    Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)         3.50532    0.35339   9.919   &lt;2e-16 ***
+## marketing$youtube   0.04575    0.00139  32.909   &lt;2e-16 ***
+## marketing$facebook  0.18799    0.00804  23.382   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.018 on 197 degrees of freedom
+## Multiple R-squared:  0.8972, Adjusted R-squared:  0.8962 
+## F-statistic: 859.6 on 2 and 197 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div id="założenia-modelu" class="section level1">
+<h1>Założenia modelu</h1>
+<ul>
+<li><p><strong>Istnienie</strong>: Dla każdej kombinacji wartości zmiennych objaśniających <span class="math inline">\(X_1, X_2,\ldots, X_k\)</span>, zmienna objaśniana <span class="math inline">\(Y\)</span> jest (jednoznaczną) zmienną losową z określonym rozkładem prawdopodobieństwa posiadającym skończoną wartość oczekiwaną i wariancję.</p></li>
+<li><p><strong>Kontrolowanie wartości czynników</strong>: Zmienną losową jest zmienna <span class="math inline">\(Y\)</span>, podczas gdy zmienne <span class="math inline">\(X_1, X_2,\ldots, X_k\)</span> są zmiennymi (nielosowymi) kontrolowanymi.</p></li>
+<li><p><strong>Liniowość</strong>: zmienna <span class="math inline">\(Y\)</span> jest liniową kombinacją zmiennych <span class="math inline">\(X_1, X_2,\ldots, X_k\)</span>.</p></li>
+<li><p><strong>Niezależność</strong>: Obserwacje zmiennej objaśnianej <span class="math inline">\(Y\)</span> są od siebie niezależne, tzn. poszczególne obserwacje zmiennej <span class="math inline">\(Y\)</span> nie zależą od wartości otrzymanych wcześniej.</p></li>
+<li><p><strong>Stałość rozproszenia (homoscedastyczność)</strong>: Wariancja (warunkowa) zmiennej <span class="math inline">\(Y\)</span> dla dowolnej ustalonej kombinacji zmiennych <span class="math inline">\(X_1, X_2,\ldots, X_k\)</span> jest taka sama (jednorodna) dla wszystkich rozkładów warunkowych</p></li>
+<li><p><strong>Normalność</strong>: Dla dowolnej ustalonej liniowej kombinacji zmiennych <span class="math inline">\(X_1, X_2,\ldots, X_k\)</span>, zmienna <span class="math inline">\(Y\)</span> ma rozkład normalny</p></li>
+</ul>
+</div>
+<div id="na-koniec" class="section level1">
+<h1>Na koniec</h1>
+<p><img src="h1.jpg" /></p>
+<p><sub><sup><a href="https://sadlaff.files.wordpress.com/2014/02/sad-laff-working-from-home-joke1-e1392532216836.jpg" class="uri">https://sadlaff.files.wordpress.com/2014/02/sad-laff-working-from-home-joke1-e1392532216836.jpg</a></sup></sub></p>
+<p><img src="h2.png" /></p>
+<p><sub><sup><a href="https://imgs.xkcd.com/comics/sustainable.png" class="uri">https://imgs.xkcd.com/comics/sustainable.png</a></sup></sub></p>
+<p><img src="h3.jpg" /></p>
+<sub><sup><a href="https://statsland.files.wordpress.com/2012/08/extrapolating.jpg" class="uri">https://statsland.files.wordpress.com/2012/08/extrapolating.jpg</a></sup></sub>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4,h5",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

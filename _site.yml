@@ -1,0 +1,23 @@
+name: "Analiza-statystyczna-wielowymiarowa"
+output_dir: "."
+navbar:
+  title: "Analiza statystyczna wielowymiarowa"
+  left:
+    - text: "Strona główna"
+      href: index.html
+    - text: "Dzień 1"
+      menu:
+        - text: "Sprawy organizacyjne"
+          href: sprawyorganizacyjne.html
+        - text: "Regresja wielowymiarowa"
+          href: regresjawielowymiarowa.html
+        - text: "Model liniowy"
+          href: modelliniowy.html
+        - text: "Model liniowy - ćw."
+          href: modelliniowycw.html
+        - text: "Model liniowy - grafika"
+          href: modelliniowygrafika.html
+        - text: "Model liniowy - prognozowanie"
+          href: modelliniowyprognozowanie.html
+        - text: "Alternatywne modele liniowe"
+          href: alternatywnemodeleliniowe.html

@@ -1,0 +1,96 @@
+---
+title: "Dzień 1 - Sprawy organizacyjne"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 5
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+---
+<style type="text/css">
+.title {
+  display: none;
+}
+
+.table {
+    width:70%;
+}
+
+#getting-started img {
+  margin-right: 10px;
+}
+
+</style>
+
+
+
+# Sprawy organizacyjne
+
+
+* Liczba godzin: 6 godz. (wykład) + 8 godz. (ćwiczenia).
+* Liczba punktów ECTS: 2.
+* Forma zaliczenia: zaliczenie na ocenę.
+* Konsultacje: informacje są dostępne są na stronie www w domenie wmii.
+
+## Treści zajęć
+
+Wykłady:
+
+* Regresja wielowymiarowa
+* Testy istotności
+* Regresja wielowymiarowa w prognozowaniu
+* Modele liniowe i nieliniowe
+* Wektory losowe
+* Rozkłady zmiennych losowych wielowymiarowych
+* Analiza wariancji wielowymiarowa
+* Analiza dyskryminacyjna
+
+
+Ćwiczenia:
+
+* Wykorzystanie różnych technik statystyki wielowymiarowej.
+* Interpretacja uzyskanych wyników oraz sformułowanie raportu z przeprowadzonego badania
+
+
+## Forma i warunki weryfikacji efektów
+
+Wykład:
+
+* Udział w dyskusji;
+* Obecność na zajęciach.
+
+Ćwiczenia: 
+
+* mini-projekt, 
+* aktywność na zajęciach.
+
+
+## Literatura
+
+* P. Biecek, Przewodnik po pakiecie R, Oficyna Wydawnicza GiS, 2017.
+* J. Syska, Współczesne metody analizy regresji wspomagane komputerowo,  dostęp online 19.01.2019, https://el.us.edu.pl/ekonofizyka/images/b/b6/MetodyDoboruModeli.pdf .
+* https://en.wikipedia.org/wiki/Ordinary_least_squares, dostęp online 19.01.2019.
+* http://facweb.cs.depaul.edu/sjost/csc423/documents/f-test-reg.htm, dostęp online 19.01.2019.
+* http://web.thu.edu.tw/wichuang/www/Financial%20Econometrics/Lectures/CHAPTER%208.pdf, dostęp online 19.01.2019.
+* S. J. Sheather, A Modern Approach to Regression with R, Springer 2009.
+* https://stats.stackexchange.com/questions/5135/interpretation-of-rs-lm-output, dostęp online 19.01.2019.
+* http://www.sthda.com/english/articles/40-regression-analysis/168-multiple-linear-regression-in-r/, dostęp online 19.01.2019.
+* https://data.library.virginia.edu/diagnostic-plots/, dostęp online 23.01.2019.
+* https://www.andrew.cmu.edu/user/achoulde/94842/homework/regression_diagnostics.html, dostęp online 23.01.2019.
+* https://stats.stackexchange.com/questions/58141/interpreting-plot-lm, dostęp online 23.01.2019.
+* https://faculty.chicagobooth.edu/richard.hahn/teaching/formulanotation.pdf, dostęp online 23.01.2019.
+* J. Adler, R in a Nutshell, Second Edition, O’Reilly Media, 2012.
+* https://datascienceplus.com/first-steps-with-non-linear-regression-in-r/, dostęp online 23.01.2019.
+* http://www.sthda.com/english/wiki/one-way-anova-test-in-r, dostęp online 24.01.2019.
+* https://rpubs.com/aaronsc32/post-hoc-analysis-tukey, dostęp online 24.01.2019.
+* http://www.sthda.com/english/wiki/two-way-anova-test-in-r, dostęp online 24.01.2019.
+* https://www.r-bloggers.com/two-way-analysis-of-variance-anova/, dostęp online 25.09.2019.
+* https://stats.stackexchange.com/questions/115304/interpreting-output-from-anova-when-using-lm-as-input, dostęp online 25.09.2019.
+* http://www.sthda.com/english/articles/40-regression-analysis/163-regression-with-categorical-variables-dummy-coding-essentials-in-r/#categorical-variables-with-more-than-two-levels, dostęp online 25.09.2019.
+* https://davetang.org/muse/2013/05/09/on-curve-fitting/, dostęp online 26.01.2019.
+* http://prac.im.pwr.wroc.pl/~arokita/SSE/Wektory.pdf, dostęp online 10.02.2019.
+
+
+
+</div>

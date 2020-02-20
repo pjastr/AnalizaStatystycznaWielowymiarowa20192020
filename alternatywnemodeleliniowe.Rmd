@@ -1,0 +1,55 @@
+---
+title: "Dzień 1 - Alternatywne modele liniowe"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 5
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+---
+<style type="text/css">
+.title {
+  display: none;
+}
+
+.table {
+    width:70%;
+}
+
+#getting-started img {
+  margin-right: 10px;
+}
+
+</style>
+
+
+
+# Alternatywne modele liniowe
+
+**Resistant regression**
+
+`lqs` - używana przy wartościach skrajnych.
+
+**Robust regression**
+
+`rlm` - używana przy heteroscedastyczności i przy wartościach skrajnych.
+
+Przykład do samodzielnego przeanalizowania:
+
+```{r}
+library(MASS)
+data(hills)
+m.lm <- lm(time~dist, data=hills)
+m.rlm <- rlm(time~dist, data=hills)
+m.lqs <- lqs(time~dist, data=hills)
+plot(hills$dist,hills$time, pch=19, cex=0.3, ylab="Time", xlab="Dist")
+lines(hills$dist,m.lm$fitted.values, lty=1)
+lines(hills$dist,m.rlm$fitted.values, lty=2)
+lines(hills$dist,m.lqs$fitted.values, lty=3)
+legend("bottomright", legend=c("lm", "rlm", "lqs"), lty=c(1, 2, 3))
+```
+
+https://www.rdocumentation.org/packages/MASS/versions/7.3-51.4/topics/hills
+</div>
+

@@ -1,0 +1,125 @@
+---
+title: "Dzień 1 - Model liniowy - prognozowanie"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 5
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+---
+<style type="text/css">
+.title {
+  display: none;
+}
+
+.table {
+    width:70%;
+}
+
+#getting-started img {
+  margin-right: 10px;
+}
+
+</style>
+
+
+
+# Model liniowy - prognozowanie
+
+Załadujmy ten sam model co poprzednio:
+
+```{r message=FALSE}
+library(tidyverse)
+devtools::install_github("kassambara/datarium")
+data("marketing", package = "datarium")
+model <- lm(sales ~ youtube + facebook + newspaper, data = marketing)
+``` 
+
+Stwórzmy nowe dane testowe:
+```{r}
+new<-data.frame( youtube = c(12, 19, 24), facebook=c(40,50,60), newspaper=c(25,55,85) )
+new
+```
+
+Wykonajmy prognozowanie:
+
+```{r}
+pred<-predict(model, newdata = new)
+pred
+```
+
+lub ręcznie:
+```{r}
+x.new<-cbind(rep(1,3),as.matrix(new))
+pred2<-x.new %*% model$coefficients
+pred2
+```
+
+Wersja pełna:
+```{r}
+predf<-predict(model, new, se.fit = TRUE)
+predf
+```
+
+`se.fit` to odchylenie standardowe względem średniej`fit`.
+
+## Przedziały ufności
+
+Przedziały ufności możemy otrzymać następująco:
+
+```{r}
+predict(model, new, se.fit = TRUE, interval = "confidence")
+```
+
+lub ręcznie za pomocą odpowiednich kwantyli rozkładu $t$:
+
+```{r}
+kt <- c(-1, 1) * qt(0.05 / 2, predf$df, lower.tail = FALSE)
+kt
+pu <- predf$fit + outer(predf$se.fit, kt)
+pu
+```
+
+`outer` - tutaj mnożenie wyraz za wyrazem.
+
+Innymi słowymi, z prawodpodobieństwem 95% średnie wyniki sprzedaży są zwarte w odpowiednim przedziale.
+
+## Wiarygodność przewidywań
+
+Przedziały ufności możemy otrzymać następująco:
+
+```{r}
+predict(model, new, se.fit = TRUE, interval = "prediction")
+```
+
+lub ręcznie:
+
+```{r}
+se.PI <- sqrt(predf$se.fit ^ 2 + predf$residual.scale ^ 2)
+wp <- predf$fit + outer(se.PI, kt)
+wp
+```
+
+## Interpretacja graficzna
+
+Wygenerujmy więcej nowych danych:
+
+```{r}
+n <- 20    
+yt <- runif(n, min = 15, max = 150)+rnorm(4,2,0.5)
+fb <- runif(n, min = 30, max = 70)
+np <- runif(n, min=50, max=144)
+new2<-data.frame( youtube = yt, facebook=fb, newspaper=np )
+pred2p<-predict(model, new2, interval = "prediction")
+head(pred2p)
+pred2c<-predict(model, new2, interval = "confidence")
+head(pred2c)
+plot(pred2c[,1], ylab="", ylim=c(min(pred2p[,2]), max(pred2p[,3])), pch=20)
+lines(pred2c[,2], col="blue", lty=2)
+lines(pred2p[,2], col="red", lty=3)
+lines(pred2c[,3], col="blue", lty=2)
+lines(pred2p[,3], col="red", lty=3)
+```
+</div>
+

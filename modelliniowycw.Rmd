@@ -1,0 +1,52 @@
+---
+title: "Dzień 1 - Model liniowy - ćw."
+output:
+  html_document:
+    toc: yes
+    toc_depth: 5
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+---
+<style type="text/css">
+.title {
+  display: none;
+}
+
+.table {
+    width:70%;
+}
+
+#getting-started img {
+  margin-right: 10px;
+}
+
+</style>
+
+
+
+# Model liniowy - ćw.
+
+
+1. Załaduj do R poniższy kod:
+
+```{r results='hide'}
+input <- mtcars[,c("mpg","disp","hp","wt")]
+print(head(input))
+model <- lm(mpg~disp+hp+wt, data = input)
+```
+
+Wykonaj analizę w modelu liniowej regresji ręcznie i automatycznie. Przeanalizuj dobroć zastosowania tego modelu.
+
+Wskazówka: oznaczenie zmiennych - [link](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/mtcars.html).
+
+2. Załaduj do R poniższy kod:
+
+```{r results='hide'}
+model2 = lm(Volume~Girth,data=trees)
+summary(model2)
+```
+
+Przeanalizuj dobroć modelu.
+</div>
+
