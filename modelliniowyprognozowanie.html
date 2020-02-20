@@ -531,22 +531,22 @@ np &lt;- runif(n, min=50, max=144)
 new2&lt;-data.frame( youtube = yt, facebook=fb, newspaper=np )
 pred2p&lt;-predict(model, new2, interval = &quot;prediction&quot;)
 head(pred2p)</code></pre>
-<pre><code>##        fit      lwr      upr
-## 1 16.36907 12.33463 20.40351
-## 2 14.72063 10.63351 18.80776
-## 3 18.58315 14.47401 22.69229
-## 4 18.56617 14.47550 22.65683
-## 5 18.57287 14.50201 22.64373
-## 6 16.10741 12.05584 20.15899</code></pre>
+<pre><code>##        fit       lwr      upr
+## 1 13.03725  8.852794 17.22170
+## 2 12.92288  8.844905 17.00085
+## 3 15.19607 11.127876 19.26427
+## 4 14.29830 10.106414 18.49019
+## 5 17.82870 13.798408 21.85899
+## 6 18.25185 14.107676 22.39602</code></pre>
 <pre class="r"><code>pred2c&lt;-predict(model, new2, interval = &quot;confidence&quot;)
 head(pred2c)</code></pre>
 <pre><code>##        fit      lwr      upr
-## 1 16.36907 15.76445 16.97369
-## 2 14.72063 13.82987 15.61139
-## 3 18.58315 17.59629 19.57002
-## 4 18.56617 17.65930 19.47303
-## 5 18.57287 17.76001 19.38573
-## 6 16.10741 15.39741 16.81742</code></pre>
+## 1 13.03725 11.77293 14.30156
+## 2 12.92288 12.07510 13.77066
+## 3 15.19607 14.39665 15.99549
+## 4 14.29830 13.00959 15.58702
+## 5 17.82870 17.25240 18.40500
+## 6 18.25185 17.12800 19.37570</code></pre>
 <pre class="r"><code>plot(pred2c[,1], ylab=&quot;&quot;, ylim=c(min(pred2p[,2]), max(pred2p[,3])), pch=20)
 lines(pred2c[,2], col=&quot;blue&quot;, lty=2)
 lines(pred2p[,2], col=&quot;red&quot;, lty=3)
