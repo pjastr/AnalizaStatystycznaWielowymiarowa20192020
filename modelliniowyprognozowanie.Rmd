@@ -101,6 +101,8 @@ wp <- predf$fit + outer(se.PI, kt)
 wp
 ```
 
+Innymi słowymi, z prawodpodobieństwem 95% wyniki sprzedaży są zwarte w odpowiednim przedziale.
+
 ## Interpretacja graficzna
 
 Wygenerujmy więcej nowych danych:
