@@ -1,0 +1,110 @@
+---
+title: "Dzień 2 - Tablica analizy wariancji - anova"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 5
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+---
+<style type="text/css">
+.title {
+  display: none;
+}
+
+.table {
+    width:70%;
+}
+
+#getting-started img {
+  margin-right: 10px;
+}
+
+</style>
+
+
+
+# Tablica analizy wariancji - anova
+
+
+## Zmienne ciągłe
+
+Przeanalizuj kod w R:
+
+```{r message=FALSE}
+library(tidyverse)
+devtools::install_github("kassambara/datarium")
+data("marketing", package = "datarium")
+```
+```{r}
+model <- lm(sales ~ youtube + facebook + newspaper, data = marketing)
+summary(model)
+anova(model)
+```
+
+
+Jak widać, ostatnia kolumna jest taka sama - nie otrzymujemy w przypadku zmiennych ciągłych nowych informacji.
+
+## Zmienne jakościowe objaśniające
+
+Rozważmy przykład z danymi jakościowymi:
+
+```{r message=FALSE}
+library(car)
+
+```{r}
+data("Salaries")
+head(Salaries)
+model <- lm(salary ~ sex, data = Salaries)
+summary(model)
+anova(model)
+```
+Jak to obliczamy?
+
+```{r}
+y<-Salaries$salary
+ssm<-sum((model$fitted.values - mean(y))^2)
+ssm
+ssr<-sum((y-model$fitted.values)^2)
+ssr
+ssm/1
+ssr/395
+f<-(ssm/1)/(ssr/395)
+f
+p<-1-pf(f, 1,395)
+p
+```
+
+Czemu nie wyszło to tak jak wcześniej? Wynika to z faktu, jak R interpretuje zmienne jakościowe. Ostatni level zmiennej `sex` to `Male`, więc ma przypisaną wartość 1, a potem (od końca) `Female` jako 0. Model liniowy jest zapisano jako $y=\beta_0+\beta_1 x +\varepsilon$. Wtedy $\beta_0+\beta_1$ dotyczy `Male`, $\beta_0$ dotyczy `Female`. Samo $\beta_1$ dotyczy różnicy między `Male` a `Female`.
+
+Jeśli zmienna ma więcej niż 2 wartości cechy, to jest zamieniana na więcej zmiennych o dwóch wartościach (levelach).
+
+```{r}
+levels(Salaries$rank)
+res <- model.matrix(~rank, data = Salaries)
+head(res)
+head(Salaries$rank)
+model2<-lm(salary ~ yrs.service + rank + discipline + sex, data = Salaries)
+summary(model2)
+anova(model2)
+```
+
+## Porównywanie modeli
+
+```{r}
+fit <- lm(sr ~ ., data = LifeCycleSavings)
+anova(fit)
+
+## same effect via separate models
+fit0 <- lm(sr ~ 1, data = LifeCycleSavings)
+fit1 <- update(fit0, . ~ . + pop15)
+fit2 <- update(fit1, . ~ . + pop75)
+fit3 <- update(fit2, . ~ . + dpi)
+fit4 <- update(fit3, . ~ . + ddpi)
+anova(fit0, fit1, fit2, fit3, fit4, test = "F")
+```
+
+Jeśli otrzymane prawdopodobieństwo w ostatniej kolumnie jest mniejsze niż $0,05$ to stwierdzamy, że bardziej zawiły model jest wystarczająco lepszy niż prostszy model. W przeciwnym wypadku wybieramy prostszy model.
+
+

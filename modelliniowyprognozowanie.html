@@ -11,7 +11,7 @@
 
 
 
-<title>Dzień 1 - Model liniowy - prognozowanie</title>
+<title>Dzień 2 - Model liniowy - prognozowanie</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -379,10 +379,40 @@ div.tocify {
       <a href="modelliniowygrafika.html">Model liniowy - grafika</a>
     </li>
     <li>
+      <a href="alternatywnemodeleliniowe.html">Alternatywne modele liniowe</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Dzień 2
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
       <a href="modelliniowyprognozowanie.html">Model liniowy - prognozowanie</a>
     </li>
     <li>
-      <a href="alternatywnemodeleliniowe.html">Alternatywne modele liniowe</a>
+      <a href="modelnieliniowylm.html">Model nieliniowy - lm</a>
+    </li>
+    <li>
+      <a href="modelnieliniowynls.html">Model nieliniowy - nls</a>
+    </li>
+    <li>
+      <a href="regresjacw.html">Regresja - ćw</a>
+    </li>
+    <li>
+      <a href="analizawariancji.html">Analiza wariancji</a>
+    </li>
+    <li>
+      <a href="analizawariancjiaov.html">Analiza wariancji - aov</a>
+    </li>
+    <li>
+      <a href="tablicaanalizywariancjianova.html">Tablica analizy wariancji - anova</a>
+    </li>
+    <li>
+      <a href="curvefitting.html">Curve fitting</a>
     </li>
   </ul>
 </li>
@@ -398,7 +428,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Dzień 1 - Model liniowy - prognozowanie</h1>
+<h1 class="title toc-ignore">Dzień 2 - Model liniowy - prognozowanie</h1>
 
 </div>
 
@@ -533,21 +563,21 @@ new2&lt;-data.frame( youtube = yt, facebook=fb, newspaper=np )
 pred2p&lt;-predict(model, new2, interval = &quot;prediction&quot;)
 head(pred2p)</code></pre>
 <pre><code>##        fit       lwr      upr
-## 1 17.20274 13.147775 21.25771
-## 2 10.82681  6.786681 14.86694
-## 3 17.71159 13.642564 21.78062
-## 4 10.53296  6.335932 14.72998
-## 5 21.24208 17.109209 25.37496
-## 6 16.00145 11.939747 20.06315</code></pre>
+## 1 13.10518  9.011717 17.19865
+## 2 20.85931 16.715952 25.00266
+## 3 14.13474 10.108548 18.16093
+## 4 11.13396  7.073773 15.19414
+## 5 23.07994 19.027828 27.13206
+## 6 15.84877 11.813201 19.88433</code></pre>
 <pre class="r"><code>pred2c&lt;-predict(model, new2, interval = &quot;confidence&quot;)
 head(pred2c)</code></pre>
-<pre><code>##        fit       lwr      upr
-## 1 17.20274 16.473612 17.93188
-## 2 10.82681 10.185320 11.46830
-## 3 17.71159 16.907944 18.51524
-## 4 10.53296  9.227633 11.83828
-## 5 21.24208 20.160645 22.32352
-## 6 16.00145 15.235767 16.76713</code></pre>
+<pre><code>##        fit      lwr      upr
+## 1 13.10518 12.18577 14.02459
+## 2 20.85931 19.73849 21.98013
+## 3 14.13474 13.58787 14.68160
+## 4 11.13396 10.37636 11.89156
+## 5 23.07994 22.36686 23.79303
+## 6 15.84877 15.23668 16.46085</code></pre>
 <pre class="r"><code>plot(pred2c[,1], ylab=&quot;&quot;, ylim=c(min(pred2p[,2]), max(pred2p[,3])), pch=20)
 lines(pred2c[,2], col=&quot;blue&quot;, lty=2)
 lines(pred2p[,2], col=&quot;red&quot;, lty=3)

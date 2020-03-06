@@ -11,7 +11,7 @@
 
 
 
-<title>Dzień 1 - Regresja wielowymiarowa</title>
+<title>Dzień 2 - Model nieliniowy - nls</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -428,7 +428,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Dzień 1 - Regresja wielowymiarowa</h1>
+<h1 class="title toc-ignore">Dzień 2 - Model nieliniowy - nls</h1>
 
 </div>
 
@@ -447,87 +447,55 @@ div.tocify {
 }
 
 </style>
-<div id="regresja-wielowymiarowa" class="section level1">
-<h1>Regresja wielowymiarowa</h1>
-<p><strong>Regresja</strong> - metoda statystyczna pozwalająca na badanie związku pomiędzy wielkościami danych. Celem regresji wielowymiarowej jest ilościowe ujęcie związków pomiędzy wieloma zmiennymi niezależnymi (objaśniającymi, czynnikami) a zmienną zależną (kryterialną, objaśnianą, odpowiedzią).</p>
-<p>W ogólności badać współzależność zmiennych możemy na cztery różne sposoby:</p>
-<ul>
-<li>Zmienna zależna jednowymiarowa oraz jedna zmienna niezależna.</li>
-<li>Zmienna zależna jednowymiarowa oraz wiele zmiennych niezależnych.</li>
-<li>Zmienna zależna wielowymiarowa oraz jedna zmienna niezależna.</li>
-<li>Zmienna zależna wielowymiarowa oraz wiele zmiennych niezależnych.</li>
-</ul>
-<p>Przykłady regresji wielowymiarowej:</p>
-<ul>
-<li><p>Wytrzymałość betonu zależy od składników użytych przy jego produkcji. Pytanie: W jakiej proporcji stosować te składniki, by wytrzymałość była największa?</p></li>
-<li><p>Cena mieszkania zależy od…. Pytanie: jak udział poszczególnych elementów wpływa na to, aby cena rynkowa była najwyższa?</p></li>
-<li><p>Udzielenie kredytu zależy od …. Pytanie: jak udział poszczególnych elementów wpływa na decyzję o przyznaniu lub nie kredytu? <em>czy to na pewno regresja?</em></p></li>
-</ul>
-<p>W ujęcie “naukowym”, badania statystyczne mają w ogólności wyjaśniać zależności pomiędzy różnymi cechami badanej populacji.</p>
-<p>Cele badań w analizie regresji:</p>
-<ul>
-<li>Scharakteryzowanie relacji (między innymi jej zasięgu, kierunku i siły).</li>
-<li>Określenie modelu matematycznego, który w najbardziej wiarygodny sposób oddaje zachowanie się odpowiedzi (innymi słowy, znalezienie odpowiedniej funkcji, która może być później wykorzystana do predykcji).</li>
-<li>Określenie, które ze zmiennych objaśniających są ważne w analizie współzależności i uszeregowanie tych zmiennych ze względu na siłę wpływu na zmienną objaśnianą.</li>
-<li>Porównywanie różnych modeli dla jednej zmiennej objaśnianej, tzn. porównanie modeli, które składają się z różnych zestawów zmiennych objaśniających.</li>
-<li>Określenie interakcji zmiennych objaśniających oraz (przy dwukierunkowej zależności) określenie zależności zmiennych objaśniających od zmiennej objaśnianej.</li>
-<li>Oszacowanie punktowe wartości współczynników regresji (kierunek i siła współzależności oraz istotność statystyczna parametrów wprowadzonych do modelu).</li>
-</ul>
-<p>Uzyskiwane wyniki należy zweryfikować pod kątem następujących kryteriów:</p>
-<ul>
-<li>Określenie logicznego związku pomiędzy zmiennymi, tzn. sprawdzenie czy uzyskane wyniki nie kolidują z naturą zjawiska.</li>
-<li>Sprawdzenie czy przyczyna poprzedza w czasie skutek.</li>
-<li>Analiza siły związku pomiędzy zmiennymi np. wysoka korelacja między zmiennymi, które w rzeczywistości nie oddziałują na siebie.</li>
-<li>Sprawdzenie czy otrzymany model sprawdza się w rzeczywistości.</li>
-<li>Spójności wyników.</li>
-<li>Określenie zgodności wyników z wiedzą teoretyczną oraz doświadczalną.</li>
-<li>Rozpatrzenie możliwości otrzymania badanego skutku, jako przejawu działania różnych przyczyn oraz możliwości wystąpienia kilku skutków jednej przyczyny.</li>
-</ul>
-<p>Najczęściej stosowane funkcje w analizie regresji:</p>
-<ul>
-<li>funkcja liniowa <span class="math inline">\(f(x)=ax+b\)</span>,</li>
-<li>funkcja wielomianowa, np. kwadratowa <span class="math inline">\(f(x)=ax^2+bx+c\)</span>,</li>
-<li>funkcja logarytmiczna <span class="math inline">\(f(x) = \ln x\)</span>,</li>
-<li>funkcja eksponencjalna <span class="math inline">\(f(x)=e^{-x}\)</span>,</li>
-<li>funkcja logistyczna <span class="math inline">\(f(x) = \frac{1}{1+e^{-x}}\)</span>.</li>
-</ul>
-<p><strong><em>Wybór metody współzależności wielu zmiennych:</em></strong></p>
-<table>
-<thead>
-<tr class="header">
-<th>Metoda analizy</th>
-<th>Zmienna objaśniana</th>
-<th>Zmienne objaśniające</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Regresja wieloraka</td>
-<td>ciągła</td>
-<td>ciągłe (dopuszcza się także dyskretne)</td>
-</tr>
-<tr class="even">
-<td>Analiza wariancji</td>
-<td>ciągła</td>
-<td>jakościowe</td>
-</tr>
-<tr class="odd">
-<td>Analiza kowariancji</td>
-<td>ciągła</td>
-<td>jakościowe (symboliczne) i ciągłe</td>
-</tr>
-<tr class="even">
-<td>Regresja Poissona</td>
-<td>dyskretna</td>
-<td>różne typy</td>
-</tr>
-<tr class="odd">
-<td>Regresja logistyczna</td>
-<td>dwuwartościowa</td>
-<td>różne typy</td>
-</tr>
-</tbody>
-</table>
+<div id="model-nieliniowy---nls" class="section level1">
+<h1>Model nieliniowy - nls</h1>
+<div id="wersja-jednowymiarowa" class="section level2">
+<h2>Wersja jednowymiarowa</h2>
+<pre class="r"><code>x&lt;-seq(0,50,1)
+y&lt;-((runif(1,10,20)*x)/(runif(1,0,10)+x))+rnorm(51,0,1)
+model&lt;-nls(y~a*x/(b+x),start = list(a = 1,b = 3))
+summary(model)</code></pre>
+<pre><code>## 
+## Formula: y ~ a * x/(b + x)
+## 
+## Parameters:
+##   Estimate Std. Error t value Pr(&gt;|t|)    
+## a  15.0317     0.3537  42.501  &lt; 2e-16 ***
+## b   6.0425     0.6378   9.475 1.17e-12 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.8797 on 49 degrees of freedom
+## 
+## Number of iterations to convergence: 7 
+## Achieved convergence tolerance: 3.374e-06</code></pre>
+<pre class="r"><code>plot(x,y)
+lines(x,predict(model),lty=2,col=&quot;red&quot;,lwd=3)</code></pre>
+<p><img src="modelnieliniowynls_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+</div>
+<div id="wersja-wielowymiarowa" class="section level2">
+<h2>Wersja wielowymiarowa</h2>
+<pre class="r"><code>n &lt;- 1000      
+x1 &lt;- runif(n, min = 0, max = 100)
+x2 &lt;- runif(n, min = 0, max = 100)
+y&lt;-5*x1/(45+x2)+rnorm(n, sd = 3)
+model2&lt;-nls(y~b1*x1/(b2+x2),start = list(b1 = 1,b2 = 2))
+summary(model2)</code></pre>
+<pre><code>## 
+## Formula: y ~ b1 * x1/(b2 + x2)
+## 
+## Parameters:
+##    Estimate Std. Error t value Pr(&gt;|t|)    
+## b1    5.127      0.467  10.977  &lt; 2e-16 ***
+## b2   44.764      6.020   7.436 2.24e-13 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 3.032 on 998 degrees of freedom
+## 
+## Number of iterations to convergence: 6 
+## Achieved convergence tolerance: 2.27e-07</code></pre>
+</div>
 </div>
 </div>
 

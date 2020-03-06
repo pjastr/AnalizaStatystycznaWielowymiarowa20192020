@@ -1,0 +1,104 @@
+---
+title: "Dzień 2 - Model nieliniowy - lm"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 5
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+---
+<style type="text/css">
+.title {
+  display: none;
+}
+
+.table {
+    width:70%;
+}
+
+#getting-started img {
+  margin-right: 10px;
+}
+
+</style>
+
+
+
+# Model nieliniowy - lm
+
+Funkcja `lm` możemy być użyta również do "nieliniowych" modeli. Warto zwrócić uwagę, że symbol `+` był używany w niestandardowym kontekście.
+
+| Symbol | Przykład | Znaczenie |
+|---|---|---|
+| `+` | `+X` | dodawanie zmiennej |
+| `-` | `-X` | usunięcie zmiennej |
+| `:` | `X:Y` | dodanie interakcji pomiędzy zmiennymi |
+| `*` | `X*Y` | dodanie obu zmiennych i interakcji pomiędzy zmiennymi |
+| `|` | `X|Y` | warunkowość: dodanie zmiennej $X$ pod warunkiem $Y$ |
+| `^` | `(X + Y + Z)^3` | dodanie wszystkich zmiennych i interakcji między nimi |
+| `I` | `I(X*Y)` | dosłownie jak jest: dodanie np. mnożenia dwóch zmiennych |
+| `1` | `X-1` | usunięcie stałej (współczynnika wolnego) z modelu |
+| `log` | `log(x)` | użycie logarytmu zmiennej (nie mylić z regresją logistyczną!) |
+
+
+Przykład:
+
+* wyrażenia:
+
+```
+Y ~ X + Z + W + X:Z + X:W + Z:W + X:Z:W
+Y ~ X * Z * W
+Y ~ (X + Z + W)^3
+```
+
+reprezentują tą samą zmienną
+
+$$Y_i=\beta_0 + \beta_1 X_i+\beta_2 Z_i +\beta_3 W_i+\beta_4X_iZ_i +\beta_5 X_iW_i+\beta_6 Z_iW_i+\beta_7X_iZ_iW_i+\varepsilon$$
+
+Jeśli mamy regresję "wielomianową"
+$$ y = \beta_0 + \beta_1X+\beta_2X^2+\beta_3X^3 + \varepsilon ,$$
+możemy np. dla stopnia trzeciego wyrażyć ją następująco na dwa sposoby:
+```
+y ~ poly(x,3, raw=TRUE)
+y ~ x + I(x^2) + I(x^3)
+```
+
+Uwaga: w przypadku modelu z funkcją eksponencjalną w razie problemów można z własności:
+$$y = e^{a+bx} \quad  \Longleftrightarrow\ \quad log(y) = a + bx.$$
+
+**Ćwiczenie:**
+
+1. Załaduj ramkę `marketing` jak wcześniej. Niech
+
+```
+y<-marketing$sales
+x<-marketing$youtube
+```
+
+Sprawdź podsumowania modeli:
+
+```
+y ~ poly(x,3, raw=TRUE)
+y ~ x + I(x^2) + I(x^3)
+y ~ poly(x,3)
+```
+
+2. Załaduj ramkę `marketing` jak wcześniej. Niech
+
+```
+y<-marketing$sales
+x<-marketing$youtube
+x2<-marketing$facebook
+z<-x*x2
+```
+
+Sprawdź podsumowania modeli:
+
+```
+y ~ x:x2
+y ~ x*x2
+y ~ z
+```
+</div>
+

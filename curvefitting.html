@@ -11,7 +11,7 @@
 
 
 
-<title>Dzień 1 - Regresja wielowymiarowa</title>
+<title>Dzień 2 - Curve fitting</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -428,7 +428,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Dzień 1 - Regresja wielowymiarowa</h1>
+<h1 class="title toc-ignore">Dzień 2 - Curve fitting</h1>
 
 </div>
 
@@ -447,87 +447,129 @@ div.tocify {
 }
 
 </style>
-<div id="regresja-wielowymiarowa" class="section level1">
-<h1>Regresja wielowymiarowa</h1>
-<p><strong>Regresja</strong> - metoda statystyczna pozwalająca na badanie związku pomiędzy wielkościami danych. Celem regresji wielowymiarowej jest ilościowe ujęcie związków pomiędzy wieloma zmiennymi niezależnymi (objaśniającymi, czynnikami) a zmienną zależną (kryterialną, objaśnianą, odpowiedzią).</p>
-<p>W ogólności badać współzależność zmiennych możemy na cztery różne sposoby:</p>
-<ul>
-<li>Zmienna zależna jednowymiarowa oraz jedna zmienna niezależna.</li>
-<li>Zmienna zależna jednowymiarowa oraz wiele zmiennych niezależnych.</li>
-<li>Zmienna zależna wielowymiarowa oraz jedna zmienna niezależna.</li>
-<li>Zmienna zależna wielowymiarowa oraz wiele zmiennych niezależnych.</li>
-</ul>
-<p>Przykłady regresji wielowymiarowej:</p>
-<ul>
-<li><p>Wytrzymałość betonu zależy od składników użytych przy jego produkcji. Pytanie: W jakiej proporcji stosować te składniki, by wytrzymałość była największa?</p></li>
-<li><p>Cena mieszkania zależy od…. Pytanie: jak udział poszczególnych elementów wpływa na to, aby cena rynkowa była najwyższa?</p></li>
-<li><p>Udzielenie kredytu zależy od …. Pytanie: jak udział poszczególnych elementów wpływa na decyzję o przyznaniu lub nie kredytu? <em>czy to na pewno regresja?</em></p></li>
-</ul>
-<p>W ujęcie “naukowym”, badania statystyczne mają w ogólności wyjaśniać zależności pomiędzy różnymi cechami badanej populacji.</p>
-<p>Cele badań w analizie regresji:</p>
-<ul>
-<li>Scharakteryzowanie relacji (między innymi jej zasięgu, kierunku i siły).</li>
-<li>Określenie modelu matematycznego, który w najbardziej wiarygodny sposób oddaje zachowanie się odpowiedzi (innymi słowy, znalezienie odpowiedniej funkcji, która może być później wykorzystana do predykcji).</li>
-<li>Określenie, które ze zmiennych objaśniających są ważne w analizie współzależności i uszeregowanie tych zmiennych ze względu na siłę wpływu na zmienną objaśnianą.</li>
-<li>Porównywanie różnych modeli dla jednej zmiennej objaśnianej, tzn. porównanie modeli, które składają się z różnych zestawów zmiennych objaśniających.</li>
-<li>Określenie interakcji zmiennych objaśniających oraz (przy dwukierunkowej zależności) określenie zależności zmiennych objaśniających od zmiennej objaśnianej.</li>
-<li>Oszacowanie punktowe wartości współczynników regresji (kierunek i siła współzależności oraz istotność statystyczna parametrów wprowadzonych do modelu).</li>
-</ul>
-<p>Uzyskiwane wyniki należy zweryfikować pod kątem następujących kryteriów:</p>
-<ul>
-<li>Określenie logicznego związku pomiędzy zmiennymi, tzn. sprawdzenie czy uzyskane wyniki nie kolidują z naturą zjawiska.</li>
-<li>Sprawdzenie czy przyczyna poprzedza w czasie skutek.</li>
-<li>Analiza siły związku pomiędzy zmiennymi np. wysoka korelacja między zmiennymi, które w rzeczywistości nie oddziałują na siebie.</li>
-<li>Sprawdzenie czy otrzymany model sprawdza się w rzeczywistości.</li>
-<li>Spójności wyników.</li>
-<li>Określenie zgodności wyników z wiedzą teoretyczną oraz doświadczalną.</li>
-<li>Rozpatrzenie możliwości otrzymania badanego skutku, jako przejawu działania różnych przyczyn oraz możliwości wystąpienia kilku skutków jednej przyczyny.</li>
-</ul>
-<p>Najczęściej stosowane funkcje w analizie regresji:</p>
-<ul>
-<li>funkcja liniowa <span class="math inline">\(f(x)=ax+b\)</span>,</li>
-<li>funkcja wielomianowa, np. kwadratowa <span class="math inline">\(f(x)=ax^2+bx+c\)</span>,</li>
-<li>funkcja logarytmiczna <span class="math inline">\(f(x) = \ln x\)</span>,</li>
-<li>funkcja eksponencjalna <span class="math inline">\(f(x)=e^{-x}\)</span>,</li>
-<li>funkcja logistyczna <span class="math inline">\(f(x) = \frac{1}{1+e^{-x}}\)</span>.</li>
-</ul>
-<p><strong><em>Wybór metody współzależności wielu zmiennych:</em></strong></p>
-<table>
-<thead>
-<tr class="header">
-<th>Metoda analizy</th>
-<th>Zmienna objaśniana</th>
-<th>Zmienne objaśniające</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Regresja wieloraka</td>
-<td>ciągła</td>
-<td>ciągłe (dopuszcza się także dyskretne)</td>
-</tr>
-<tr class="even">
-<td>Analiza wariancji</td>
-<td>ciągła</td>
-<td>jakościowe</td>
-</tr>
-<tr class="odd">
-<td>Analiza kowariancji</td>
-<td>ciągła</td>
-<td>jakościowe (symboliczne) i ciągłe</td>
-</tr>
-<tr class="even">
-<td>Regresja Poissona</td>
-<td>dyskretna</td>
-<td>różne typy</td>
-</tr>
-<tr class="odd">
-<td>Regresja logistyczna</td>
-<td>dwuwartościowa</td>
-<td>różne typy</td>
-</tr>
-</tbody>
-</table>
+<div id="curve-fitting" class="section level1">
+<h1>Curve fitting</h1>
+<p>“Curve fitting” (dopasowanie krzywej) to zadanie sprowadzająca się do szukania najbardziej dopasowanego modelu.</p>
+<p>W przykładach ograniczymy się do jednej zmiennej objaśniającej, jednak można to w dosyć prosty sposób zastosować również przy kilku zmiennych objaśniających.</p>
+<pre class="r"><code>x &lt;- c(32,64,96,118,126,144,152.5,158)
+y &lt;- c(99.5,104.8,108.5,100,86,64,35.3,15)
+plot(x,y, pch=20)</code></pre>
+<p><img src="curvefitting_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p>Stwórzmy kilka modeli i zrób wykresy teoretycznych wartości z modelu:</p>
+<pre class="r"><code>model1  &lt;- lm(y~x)
+model2 &lt;- lm(y~poly(x,2,raw=TRUE))
+model3 &lt;- lm(y~poly(x,3,raw=TRUE))
+model4 &lt;- lm(y~poly(x,4,raw=TRUE))
+x.axis &lt;- seq(30,160, length=50)
+plot(x,y,pch=20,ylim=c(0,150))
+lines(x.axis, predict(model1,data.frame(x=x.axis)), col=&quot;red&quot;)
+lines(x.axis, predict(model2,data.frame(x=x.axis)), col=&quot;green&quot;)
+lines(x.axis, predict(model3,data.frame(x=x.axis)), col=&quot;blue&quot;)
+lines(x.axis, predict(model4,data.frame(x=x.axis)), col=&quot;purple&quot;)</code></pre>
+<p><img src="curvefitting_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>Sprawdźmy <span class="math inline">\(R^2\)</span>:</p>
+<pre class="r"><code>summary(model1)$r.squared</code></pre>
+<pre><code>## [1] 0.5759157</code></pre>
+<pre class="r"><code>summary(model2)$r.squared</code></pre>
+<pre><code>## [1] 0.9473663</code></pre>
+<pre class="r"><code>summary(model3)$r.squared</code></pre>
+<pre><code>## [1] 0.9923689</code></pre>
+<pre class="r"><code>summary(model4)$r.squared</code></pre>
+<pre><code>## [1] 0.9943288</code></pre>
+<p>Sprawdźmy skorygowane <span class="math inline">\(\overline{R}^2\)</span>:</p>
+<pre class="r"><code>summary(model1)$adj.r.squared</code></pre>
+<pre><code>## [1] 0.505235</code></pre>
+<pre class="r"><code>summary(model2)$adj.r.squared</code></pre>
+<pre><code>## [1] 0.9263129</code></pre>
+<pre class="r"><code>summary(model3)$adj.r.squared</code></pre>
+<pre><code>## [1] 0.9866455</code></pre>
+<pre class="r"><code>summary(model4)$adj.r.squared</code></pre>
+<pre><code>## [1] 0.9867671</code></pre>
+<p>Co nam pokaże <code>anova</code>?</p>
+<pre class="r"><code>anova(model1,model2,model4,model3)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: y ~ x
+## Model 2: y ~ poly(x, 2, raw = TRUE)
+## Model 3: y ~ poly(x, 4, raw = TRUE)
+## Model 4: y ~ poly(x, 3, raw = TRUE)
+##   Res.Df    RSS Df Sum of Sq        F    Pr(&gt;F)    
+## 1      6 3660.8                                    
+## 2      5  454.3  1    3206.4 196.4919 0.0007862 ***
+## 3      3   49.0  2     405.4  12.4212 0.0353688 *  
+## 4      4   65.9 -1     -16.9   1.0368 0.3835381    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Dodajmy model nieliniowy.</p>
+<pre class="r"><code>model5&lt;-nls(y~poly(x,5,raw=TRUE)%*% coef, start = list(coef = c(a = 1, b = 2, c=2, d=4, e=2)))
+anova(model4,model5)</code></pre>
+<pre><code>## Warning in anova.lmlist(object, ...): models with response &#39;&quot;NULL&quot;&#39; removed
+## because response differs from model 1</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: y
+##                        Df Sum Sq Mean Sq F value   Pr(&gt;F)   
+## poly(x, 4, raw = TRUE)  4 8583.2 2145.81   131.5 0.001064 **
+## Residuals               3   49.0   16.32                    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Musimy porównywać w większości wypadkóW modele “tego samego typu”:</p>
+<pre class="r"><code>model6&lt;-nls(y~poly(x,4,raw=TRUE)%*% coef, start = list(coef = c(a = 1, b = 2, c=2, d=1)))
+anova(model6, model5)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: y ~ poly(x, 4, raw = TRUE) %*% coef
+## Model 2: y ~ poly(x, 5, raw = TRUE) %*% coef
+##   Res.Df Res.Sum Sq Df Sum Sq F value Pr(&gt;F)
+## 1      4     79.383                         
+## 2      3     60.188  1 19.195  0.9568 0.4001</code></pre>
+<p>Jak zatem porównywać? Pierwsza opcja to ręczne liczenie <span class="math inline">\(R^2\)</span>.</p>
+<pre class="r"><code>ym&lt;-mean(y)
+yh&lt;-fitted(model4)
+ssm&lt;-sum((yh-ym)^2)
+sst&lt;-sum((y-ym)^2)
+r2&lt;-ssm/sst
+r2</code></pre>
+<pre><code>## [1] 0.9943288</code></pre>
+<pre class="r"><code>yh&lt;-fitted(model5)
+ssm&lt;-sum((yh-ym)^2)
+sst&lt;-sum((y-ym)^2)
+r2&lt;-ssm/sst
+r2</code></pre>
+<pre><code>## [1] 0.9946821</code></pre>
+<pre class="r"><code>yh&lt;-fitted(model6)
+ssm&lt;-sum((yh-ym)^2)
+sst&lt;-sum((y-ym)^2)
+r2&lt;-ssm/sst
+r2</code></pre>
+<pre><code>## [1] 0.998033</code></pre>
+<p>Zobaczmy wykresy.</p>
+<pre class="r"><code>plot(x,y,pch=20,ylim=c(0,150))
+lines(x.axis, predict(model4,data.frame(x=x.axis)), col=&quot;red&quot;)
+lines(x.axis, predict(model5,data.frame(x=x.axis)), col=&quot;blue&quot;)
+lines(x.axis, predict(model6,data.frame(x=x.axis)), col=&quot;green&quot;)</code></pre>
+<p><img src="curvefitting_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>Jak to mierzyć? Możemy sprawdzić tzw. kryterium informacyjne Akaikego (Akaike Information Criterion) - <a href="https://pl.wikipedia.org/wiki/Kryterium_informacyjne_Akaikego">link</a>.</p>
+<pre class="r"><code>AIC(model1)</code></pre>
+<pre><code>## [1] 77.71092</code></pre>
+<pre class="r"><code>AIC(model2)</code></pre>
+<pre><code>## [1] 63.01831</code></pre>
+<pre class="r"><code>AIC(model3)</code></pre>
+<pre><code>## [1] 49.56936</code></pre>
+<pre class="r"><code>AIC(model4)</code></pre>
+<pre><code>## [1] 49.19471</code></pre>
+<pre class="r"><code>AIC(model5)</code></pre>
+<pre><code>## [1] 50.84723</code></pre>
+<pre class="r"><code>AIC(model6)</code></pre>
+<pre><code>## [1] 51.06176</code></pre>
+<div id="ćwiczenie" class="section level2">
+<h2>Ćwiczenie</h2>
+<ol style="list-style-type: decimal">
+<li>Wygenerujmy sobie dane:</li>
+</ol>
+<pre class="r"><code>x&lt;-seq(10,50,1)
+y&lt;-100/x+rnorm(1,sd=2)</code></pre>
+<p>Poszukaj najlepszego modelu.</p>
 </div>
 </div>
 

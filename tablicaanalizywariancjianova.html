@@ -11,7 +11,7 @@
 
 
 
-<title>Dzień 1 - Regresja wielowymiarowa</title>
+<title>Dzień 2 - Tablica analizy wariancji - anova</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -428,7 +428,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Dzień 1 - Regresja wielowymiarowa</h1>
+<h1 class="title toc-ignore">Dzień 2 - Tablica analizy wariancji - anova</h1>
 
 </div>
 
@@ -447,87 +447,202 @@ div.tocify {
 }
 
 </style>
-<div id="regresja-wielowymiarowa" class="section level1">
-<h1>Regresja wielowymiarowa</h1>
-<p><strong>Regresja</strong> - metoda statystyczna pozwalająca na badanie związku pomiędzy wielkościami danych. Celem regresji wielowymiarowej jest ilościowe ujęcie związków pomiędzy wieloma zmiennymi niezależnymi (objaśniającymi, czynnikami) a zmienną zależną (kryterialną, objaśnianą, odpowiedzią).</p>
-<p>W ogólności badać współzależność zmiennych możemy na cztery różne sposoby:</p>
-<ul>
-<li>Zmienna zależna jednowymiarowa oraz jedna zmienna niezależna.</li>
-<li>Zmienna zależna jednowymiarowa oraz wiele zmiennych niezależnych.</li>
-<li>Zmienna zależna wielowymiarowa oraz jedna zmienna niezależna.</li>
-<li>Zmienna zależna wielowymiarowa oraz wiele zmiennych niezależnych.</li>
-</ul>
-<p>Przykłady regresji wielowymiarowej:</p>
-<ul>
-<li><p>Wytrzymałość betonu zależy od składników użytych przy jego produkcji. Pytanie: W jakiej proporcji stosować te składniki, by wytrzymałość była największa?</p></li>
-<li><p>Cena mieszkania zależy od…. Pytanie: jak udział poszczególnych elementów wpływa na to, aby cena rynkowa była najwyższa?</p></li>
-<li><p>Udzielenie kredytu zależy od …. Pytanie: jak udział poszczególnych elementów wpływa na decyzję o przyznaniu lub nie kredytu? <em>czy to na pewno regresja?</em></p></li>
-</ul>
-<p>W ujęcie “naukowym”, badania statystyczne mają w ogólności wyjaśniać zależności pomiędzy różnymi cechami badanej populacji.</p>
-<p>Cele badań w analizie regresji:</p>
-<ul>
-<li>Scharakteryzowanie relacji (między innymi jej zasięgu, kierunku i siły).</li>
-<li>Określenie modelu matematycznego, który w najbardziej wiarygodny sposób oddaje zachowanie się odpowiedzi (innymi słowy, znalezienie odpowiedniej funkcji, która może być później wykorzystana do predykcji).</li>
-<li>Określenie, które ze zmiennych objaśniających są ważne w analizie współzależności i uszeregowanie tych zmiennych ze względu na siłę wpływu na zmienną objaśnianą.</li>
-<li>Porównywanie różnych modeli dla jednej zmiennej objaśnianej, tzn. porównanie modeli, które składają się z różnych zestawów zmiennych objaśniających.</li>
-<li>Określenie interakcji zmiennych objaśniających oraz (przy dwukierunkowej zależności) określenie zależności zmiennych objaśniających od zmiennej objaśnianej.</li>
-<li>Oszacowanie punktowe wartości współczynników regresji (kierunek i siła współzależności oraz istotność statystyczna parametrów wprowadzonych do modelu).</li>
-</ul>
-<p>Uzyskiwane wyniki należy zweryfikować pod kątem następujących kryteriów:</p>
-<ul>
-<li>Określenie logicznego związku pomiędzy zmiennymi, tzn. sprawdzenie czy uzyskane wyniki nie kolidują z naturą zjawiska.</li>
-<li>Sprawdzenie czy przyczyna poprzedza w czasie skutek.</li>
-<li>Analiza siły związku pomiędzy zmiennymi np. wysoka korelacja między zmiennymi, które w rzeczywistości nie oddziałują na siebie.</li>
-<li>Sprawdzenie czy otrzymany model sprawdza się w rzeczywistości.</li>
-<li>Spójności wyników.</li>
-<li>Określenie zgodności wyników z wiedzą teoretyczną oraz doświadczalną.</li>
-<li>Rozpatrzenie możliwości otrzymania badanego skutku, jako przejawu działania różnych przyczyn oraz możliwości wystąpienia kilku skutków jednej przyczyny.</li>
-</ul>
-<p>Najczęściej stosowane funkcje w analizie regresji:</p>
-<ul>
-<li>funkcja liniowa <span class="math inline">\(f(x)=ax+b\)</span>,</li>
-<li>funkcja wielomianowa, np. kwadratowa <span class="math inline">\(f(x)=ax^2+bx+c\)</span>,</li>
-<li>funkcja logarytmiczna <span class="math inline">\(f(x) = \ln x\)</span>,</li>
-<li>funkcja eksponencjalna <span class="math inline">\(f(x)=e^{-x}\)</span>,</li>
-<li>funkcja logistyczna <span class="math inline">\(f(x) = \frac{1}{1+e^{-x}}\)</span>.</li>
-</ul>
-<p><strong><em>Wybór metody współzależności wielu zmiennych:</em></strong></p>
-<table>
-<thead>
-<tr class="header">
-<th>Metoda analizy</th>
-<th>Zmienna objaśniana</th>
-<th>Zmienne objaśniające</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Regresja wieloraka</td>
-<td>ciągła</td>
-<td>ciągłe (dopuszcza się także dyskretne)</td>
-</tr>
-<tr class="even">
-<td>Analiza wariancji</td>
-<td>ciągła</td>
-<td>jakościowe</td>
-</tr>
-<tr class="odd">
-<td>Analiza kowariancji</td>
-<td>ciągła</td>
-<td>jakościowe (symboliczne) i ciągłe</td>
-</tr>
-<tr class="even">
-<td>Regresja Poissona</td>
-<td>dyskretna</td>
-<td>różne typy</td>
-</tr>
-<tr class="odd">
-<td>Regresja logistyczna</td>
-<td>dwuwartościowa</td>
-<td>różne typy</td>
-</tr>
-</tbody>
-</table>
+<div id="tablica-analizy-wariancji---anova" class="section level1">
+<h1>Tablica analizy wariancji - anova</h1>
+<div id="zmienne-ciągłe" class="section level2">
+<h2>Zmienne ciągłe</h2>
+<p>Przeanalizuj kod w R:</p>
+<pre class="r"><code>library(tidyverse)
+devtools::install_github(&quot;kassambara/datarium&quot;)
+data(&quot;marketing&quot;, package = &quot;datarium&quot;)</code></pre>
+<pre class="r"><code>model &lt;- lm(sales ~ youtube + facebook + newspaper, data = marketing)
+summary(model)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = sales ~ youtube + facebook + newspaper, data = marketing)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -10.5932  -1.0690   0.2902   1.4272   3.3951 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  3.526667   0.374290   9.422   &lt;2e-16 ***
+## youtube      0.045765   0.001395  32.809   &lt;2e-16 ***
+## facebook     0.188530   0.008611  21.893   &lt;2e-16 ***
+## newspaper   -0.001037   0.005871  -0.177     0.86    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.023 on 196 degrees of freedom
+## Multiple R-squared:  0.8972, Adjusted R-squared:  0.8956 
+## F-statistic: 570.3 on 3 and 196 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>anova(model)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: sales
+##            Df Sum Sq Mean Sq   F value Pr(&gt;F)    
+## youtube     1 4773.1  4773.1 1166.7308 &lt;2e-16 ***
+## facebook    1 2225.7  2225.7  544.0501 &lt;2e-16 ***
+## newspaper   1    0.1     0.1    0.0312 0.8599    
+## Residuals 196  801.8     4.1                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Jak widać, ostatnia kolumna jest taka sama - nie otrzymujemy w przypadku zmiennych ciągłych nowych informacji.</p>
+</div>
+<div id="zmienne-jakościowe-objaśniające" class="section level2">
+<h2>Zmienne jakościowe objaśniające</h2>
+<p>Rozważmy przykład z danymi jakościowymi:</p>
+<pre class="r"><code>library(car)</code></pre>
+<pre><code>## Warning: package &#39;car&#39; was built under R version 3.6.3</code></pre>
+<pre class="r"><code>data(&quot;Salaries&quot;)
+head(Salaries)</code></pre>
+<pre><code>##        rank discipline yrs.since.phd yrs.service  sex salary
+## 1      Prof          B            19          18 Male 139750
+## 2      Prof          B            20          16 Male 173200
+## 3  AsstProf          B             4           3 Male  79750
+## 4      Prof          B            45          39 Male 115000
+## 5      Prof          B            40          41 Male 141500
+## 6 AssocProf          B             6           6 Male  97000</code></pre>
+<pre class="r"><code>model &lt;- lm(salary ~ sex, data = Salaries)
+summary(model)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = salary ~ sex, data = Salaries)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -57290 -23502  -6828  19710 116455 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   101002       4809  21.001  &lt; 2e-16 ***
+## sexMale        14088       5065   2.782  0.00567 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 30030 on 395 degrees of freedom
+## Multiple R-squared:  0.01921,    Adjusted R-squared:  0.01673 
+## F-statistic: 7.738 on 1 and 395 DF,  p-value: 0.005667</code></pre>
+<pre class="r"><code>anova(model)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: salary
+##            Df     Sum Sq    Mean Sq F value   Pr(&gt;F)   
+## sex         1 6.9800e+09 6980014930  7.7377 0.005667 **
+## Residuals 395 3.5632e+11  902077538                    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Jak to obliczamy?</p>
+<pre class="r"><code>y&lt;-Salaries$salary
+ssm&lt;-sum((model$fitted.values - mean(y))^2)
+ssm</code></pre>
+<pre><code>## [1] 6980014930</code></pre>
+<pre class="r"><code>ssr&lt;-sum((y-model$fitted.values)^2)
+ssr</code></pre>
+<pre><code>## [1] 356320627631</code></pre>
+<pre class="r"><code>ssm/1</code></pre>
+<pre><code>## [1] 6980014930</code></pre>
+<pre class="r"><code>ssr/395</code></pre>
+<pre><code>## [1] 902077538</code></pre>
+<pre class="r"><code>f&lt;-(ssm/1)/(ssr/395)
+f</code></pre>
+<pre><code>## [1] 7.737711</code></pre>
+<pre class="r"><code>p&lt;-1-pf(f, 1,395)
+p</code></pre>
+<pre><code>## [1] 0.005667107</code></pre>
+<p>Czemu nie wyszło to tak jak wcześniej? Wynika to z faktu, jak R interpretuje zmienne jakościowe. Ostatni level zmiennej <code>sex</code> to <code>Male</code>, więc ma przypisaną wartość 1, a potem (od końca) <code>Female</code> jako 0. Model liniowy jest zapisano jako <span class="math inline">\(y=\beta_0+\beta_1 x +\varepsilon\)</span>. Wtedy <span class="math inline">\(\beta_0+\beta_1\)</span> dotyczy <code>Male</code>, <span class="math inline">\(\beta_0\)</span> dotyczy <code>Female</code>. Samo <span class="math inline">\(\beta_1\)</span> dotyczy różnicy między <code>Male</code> a <code>Female</code>.</p>
+<p>Jeśli zmienna ma więcej niż 2 wartości cechy, to jest zamieniana na więcej zmiennych o dwóch wartościach (levelach).</p>
+<pre class="r"><code>levels(Salaries$rank)</code></pre>
+<pre><code>## [1] &quot;AsstProf&quot;  &quot;AssocProf&quot; &quot;Prof&quot;</code></pre>
+<pre class="r"><code>res &lt;- model.matrix(~rank, data = Salaries)
+head(res)</code></pre>
+<pre><code>##   (Intercept) rankAssocProf rankProf
+## 1           1             0        1
+## 2           1             0        1
+## 3           1             0        0
+## 4           1             0        1
+## 5           1             0        1
+## 6           1             1        0</code></pre>
+<pre class="r"><code>head(Salaries$rank)</code></pre>
+<pre><code>## [1] Prof      Prof      AsstProf  Prof      Prof      AssocProf
+## Levels: AsstProf AssocProf Prof</code></pre>
+<pre class="r"><code>model2&lt;-lm(salary ~ yrs.service + rank + discipline + sex, data = Salaries)
+summary(model2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = salary ~ yrs.service + rank + discipline + sex, 
+##     data = Salaries)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -64202 -14255  -1533  10571  99163 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   68351.67    4482.20  15.250  &lt; 2e-16 ***
+## yrs.service     -88.78     111.64  -0.795 0.426958    
+## rankAssocProf 14560.40    4098.32   3.553 0.000428 ***
+## rankProf      49159.64    3834.49  12.820  &lt; 2e-16 ***
+## disciplineB   13473.38    2315.50   5.819 1.24e-08 ***
+## sexMale        4771.25    3878.00   1.230 0.219311    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 22650 on 391 degrees of freedom
+## Multiple R-squared:  0.4478, Adjusted R-squared:  0.4407 
+## F-statistic: 63.41 on 5 and 391 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>anova(model2)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: salary
+##              Df     Sum Sq    Mean Sq  F value    Pr(&gt;F)    
+## yrs.service   1 4.0709e+10 4.0709e+10  79.3405 &lt; 2.2e-16 ***
+## rank          2 1.0358e+11 5.1789e+10 100.9335 &lt; 2.2e-16 ***
+## discipline    1 1.7617e+10 1.7617e+10  34.3350 9.861e-09 ***
+## sex           1 7.7669e+08 7.7669e+08   1.5137    0.2193    
+## Residuals   391 2.0062e+11 5.1310e+08                       
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="porównywanie-modeli" class="section level2">
+<h2>Porównywanie modeli</h2>
+<pre class="r"><code>fit &lt;- lm(sr ~ ., data = LifeCycleSavings)
+anova(fit)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: sr
+##           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## pop15      1 204.12 204.118 14.1157 0.0004922 ***
+## pop75      1  53.34  53.343  3.6889 0.0611255 .  
+## dpi        1  12.40  12.401  0.8576 0.3593551    
+## ddpi       1  63.05  63.054  4.3605 0.0424711 *  
+## Residuals 45 650.71  14.460                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>## same effect via separate models
+fit0 &lt;- lm(sr ~ 1, data = LifeCycleSavings)
+fit1 &lt;- update(fit0, . ~ . + pop15)
+fit2 &lt;- update(fit1, . ~ . + pop75)
+fit3 &lt;- update(fit2, . ~ . + dpi)
+fit4 &lt;- update(fit3, . ~ . + ddpi)
+anova(fit0, fit1, fit2, fit3, fit4, test = &quot;F&quot;)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: sr ~ 1
+## Model 2: sr ~ pop15
+## Model 3: sr ~ pop15 + pop75
+## Model 4: sr ~ pop15 + pop75 + dpi
+## Model 5: sr ~ pop15 + pop75 + dpi + ddpi
+##   Res.Df    RSS Df Sum of Sq       F    Pr(&gt;F)    
+## 1     49 983.63                                   
+## 2     48 779.51  1   204.118 14.1157 0.0004922 ***
+## 3     47 726.17  1    53.343  3.6889 0.0611255 .  
+## 4     46 713.77  1    12.401  0.8576 0.3593551    
+## 5     45 650.71  1    63.054  4.3605 0.0424711 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Jeśli otrzymane prawdopodobieństwo w ostatniej kolumnie jest mniejsze niż <span class="math inline">\(0,05\)</span> to stwierdzamy, że bardziej zawiły model jest wystarczająco lepszy niż prostszy model. W przeciwnym wypadku wybieramy prostszy model.</p>
 </div>
 </div>
 

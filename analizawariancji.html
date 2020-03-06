@@ -11,7 +11,7 @@
 
 
 
-<title>Dzień 1 - Regresja wielowymiarowa</title>
+<title>Dzień 2 - Analiza wariancji</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -428,7 +428,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Dzień 1 - Regresja wielowymiarowa</h1>
+<h1 class="title toc-ignore">Dzień 2 - Analiza wariancji</h1>
 
 </div>
 
@@ -447,88 +447,20 @@ div.tocify {
 }
 
 </style>
-<div id="regresja-wielowymiarowa" class="section level1">
-<h1>Regresja wielowymiarowa</h1>
-<p><strong>Regresja</strong> - metoda statystyczna pozwalająca na badanie związku pomiędzy wielkościami danych. Celem regresji wielowymiarowej jest ilościowe ujęcie związków pomiędzy wieloma zmiennymi niezależnymi (objaśniającymi, czynnikami) a zmienną zależną (kryterialną, objaśnianą, odpowiedzią).</p>
-<p>W ogólności badać współzależność zmiennych możemy na cztery różne sposoby:</p>
+<div id="analiza-wariancji" class="section level1">
+<h1>Analiza wariancji</h1>
+<p>Przez analizę wariancji zazwyczaj uważa się testowanie istotności różnić między średnimi. Model zwykle stosowany gdy co najmniej jedna ze zmiennych objaśniających jest jakościowa.</p>
+<p>Modele analizy wariancji można podzielić na:</p>
 <ul>
-<li>Zmienna zależna jednowymiarowa oraz jedna zmienna niezależna.</li>
-<li>Zmienna zależna jednowymiarowa oraz wiele zmiennych niezależnych.</li>
-<li>Zmienna zależna wielowymiarowa oraz jedna zmienna niezależna.</li>
-<li>Zmienna zależna wielowymiarowa oraz wiele zmiennych niezależnych.</li>
+<li>modele jednoczynnikowe - wpływ każdego czynnika jest rozpatrywany oddzielnie,</li>
+<li>modele wieloczynnikowe - wpływ różnych czynników jest rozpatrywany łącznie.</li>
 </ul>
-<p>Przykłady regresji wielowymiarowej:</p>
+<p>W R jest dostępnych wiele funkcji i narzędzi. Omówimy trzy najpopularniejsze:</p>
 <ul>
-<li><p>Wytrzymałość betonu zależy od składników użytych przy jego produkcji. Pytanie: W jakiej proporcji stosować te składniki, by wytrzymałość była największa?</p></li>
-<li><p>Cena mieszkania zależy od…. Pytanie: jak udział poszczególnych elementów wpływa na to, aby cena rynkowa była najwyższa?</p></li>
-<li><p>Udzielenie kredytu zależy od …. Pytanie: jak udział poszczególnych elementów wpływa na decyzję o przyznaniu lub nie kredytu? <em>czy to na pewno regresja?</em></p></li>
+<li><code>aov</code></li>
+<li><code>anova</code></li>
+<li><code>manova</code></li>
 </ul>
-<p>W ujęcie “naukowym”, badania statystyczne mają w ogólności wyjaśniać zależności pomiędzy różnymi cechami badanej populacji.</p>
-<p>Cele badań w analizie regresji:</p>
-<ul>
-<li>Scharakteryzowanie relacji (między innymi jej zasięgu, kierunku i siły).</li>
-<li>Określenie modelu matematycznego, który w najbardziej wiarygodny sposób oddaje zachowanie się odpowiedzi (innymi słowy, znalezienie odpowiedniej funkcji, która może być później wykorzystana do predykcji).</li>
-<li>Określenie, które ze zmiennych objaśniających są ważne w analizie współzależności i uszeregowanie tych zmiennych ze względu na siłę wpływu na zmienną objaśnianą.</li>
-<li>Porównywanie różnych modeli dla jednej zmiennej objaśnianej, tzn. porównanie modeli, które składają się z różnych zestawów zmiennych objaśniających.</li>
-<li>Określenie interakcji zmiennych objaśniających oraz (przy dwukierunkowej zależności) określenie zależności zmiennych objaśniających od zmiennej objaśnianej.</li>
-<li>Oszacowanie punktowe wartości współczynników regresji (kierunek i siła współzależności oraz istotność statystyczna parametrów wprowadzonych do modelu).</li>
-</ul>
-<p>Uzyskiwane wyniki należy zweryfikować pod kątem następujących kryteriów:</p>
-<ul>
-<li>Określenie logicznego związku pomiędzy zmiennymi, tzn. sprawdzenie czy uzyskane wyniki nie kolidują z naturą zjawiska.</li>
-<li>Sprawdzenie czy przyczyna poprzedza w czasie skutek.</li>
-<li>Analiza siły związku pomiędzy zmiennymi np. wysoka korelacja między zmiennymi, które w rzeczywistości nie oddziałują na siebie.</li>
-<li>Sprawdzenie czy otrzymany model sprawdza się w rzeczywistości.</li>
-<li>Spójności wyników.</li>
-<li>Określenie zgodności wyników z wiedzą teoretyczną oraz doświadczalną.</li>
-<li>Rozpatrzenie możliwości otrzymania badanego skutku, jako przejawu działania różnych przyczyn oraz możliwości wystąpienia kilku skutków jednej przyczyny.</li>
-</ul>
-<p>Najczęściej stosowane funkcje w analizie regresji:</p>
-<ul>
-<li>funkcja liniowa <span class="math inline">\(f(x)=ax+b\)</span>,</li>
-<li>funkcja wielomianowa, np. kwadratowa <span class="math inline">\(f(x)=ax^2+bx+c\)</span>,</li>
-<li>funkcja logarytmiczna <span class="math inline">\(f(x) = \ln x\)</span>,</li>
-<li>funkcja eksponencjalna <span class="math inline">\(f(x)=e^{-x}\)</span>,</li>
-<li>funkcja logistyczna <span class="math inline">\(f(x) = \frac{1}{1+e^{-x}}\)</span>.</li>
-</ul>
-<p><strong><em>Wybór metody współzależności wielu zmiennych:</em></strong></p>
-<table>
-<thead>
-<tr class="header">
-<th>Metoda analizy</th>
-<th>Zmienna objaśniana</th>
-<th>Zmienne objaśniające</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Regresja wieloraka</td>
-<td>ciągła</td>
-<td>ciągłe (dopuszcza się także dyskretne)</td>
-</tr>
-<tr class="even">
-<td>Analiza wariancji</td>
-<td>ciągła</td>
-<td>jakościowe</td>
-</tr>
-<tr class="odd">
-<td>Analiza kowariancji</td>
-<td>ciągła</td>
-<td>jakościowe (symboliczne) i ciągłe</td>
-</tr>
-<tr class="even">
-<td>Regresja Poissona</td>
-<td>dyskretna</td>
-<td>różne typy</td>
-</tr>
-<tr class="odd">
-<td>Regresja logistyczna</td>
-<td>dwuwartościowa</td>
-<td>różne typy</td>
-</tr>
-</tbody>
-</table>
-</div>
 </div>
 
 

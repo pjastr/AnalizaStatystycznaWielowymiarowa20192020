@@ -1,5 +1,5 @@
 ---
-title: "Dzień 1 - Model liniowy - prognozowanie"
+title: "Dzień 2 - Model liniowy - prognozowanie"
 output:
   html_document:
     toc: yes

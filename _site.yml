@@ -17,7 +17,23 @@ navbar:
           href: modelliniowycw.html
         - text: "Model liniowy - grafika"
           href: modelliniowygrafika.html
-        - text: "Model liniowy - prognozowanie"
-          href: modelliniowyprognozowanie.html
         - text: "Alternatywne modele liniowe"
           href: alternatywnemodeleliniowe.html
+    - text: "Dzień 2"
+      menu:
+        - text: "Model liniowy - prognozowanie"
+          href: modelliniowyprognozowanie.html
+        - text: "Model nieliniowy - lm"
+          href: modelnieliniowylm.html
+        - text: "Model nieliniowy - nls"
+          href: modelnieliniowynls.html
+        - text: "Regresja - ćw"
+          href: regresjacw.html
+        - text: "Analiza wariancji"
+          href: analizawariancji.html
+        - text: "Analiza wariancji - aov"
+          href: analizawariancjiaov.html
+        - text: "Tablica analizy wariancji - anova"
+          href: tablicaanalizywariancjianova.html
+        - text: "Curve fitting"
+          href: curvefitting.html

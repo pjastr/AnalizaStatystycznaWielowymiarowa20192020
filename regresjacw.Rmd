@@ -1,0 +1,64 @@
+---
+title: "Dzień 2 - Regresja - ćw."
+output:
+  html_document:
+    toc: yes
+    toc_depth: 5
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+---
+<style type="text/css">
+.title {
+  display: none;
+}
+
+.table {
+    width:70%;
+}
+
+#getting-started img {
+  margin-right: 10px;
+}
+
+</style>
+
+
+
+# Regresja - ćw.
+
+
+1. Załaduj do R poniższe ramki danych i potestuj modele na nich:
+
+* sprzedaż siedzisk samochodowych:
+```{r}
+library(ISLR)
+data("Carseats")
+head(Carseats)
+```
+
+Opis danych - [link](https://www.rdocumentation.org/packages/ISLR/versions/1.2/topics/Carseats). *Warto wybrać zmienne ciągłe.*
+
+* ramka `mtcars`.
+
+* ramka `marketing`.
+
+2. Ze strony ([link](http://www3.dsi.uminho.pt/pcortez/wine/)) pobierz plik zip z danymi. Następnie rozpakuj go. Pliki winequality-red.csv i winequality-white.csv skopiuj do katalogu roboczego R. Następnie załaduj je do R i przeprowadź analizę regresji w różnych modelach.
+
+Opis zmiennych: 
+   1 - fixed acidity (stała kwasowość), 
+   2 - volatile acidity (lotna kwasowość),
+   3 - citric acid (kwas cytrynowy),
+   4 - residual sugar (cukier resztkowy),
+   5 - chlorides (chlorki),
+   6 - free sulfur dioxide (wolny dwutlenek siarki),
+   7 - total sulfur dioxide (całkowity dwutlenek siarki),
+   8 - density (gęstość),
+   9 - pH,
+   10 - sulphates (siarczany),
+   11 - alcohol (zwartość alkoholu),
+   12 - quality (jakość).
+
+Zmienną objaśnianą jest 12 - jakość. 
+
+

@@ -1,0 +1,230 @@
+---
+title: "Dzień 2 - Analiza wariancji - aov"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 5
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+---
+<style type="text/css">
+.title {
+  display: none;
+}
+
+.table {
+    width:70%;
+}
+
+#getting-started img {
+  margin-right: 10px;
+}
+
+</style>
+
+
+
+# Analiza wariancji - aov
+
+
+## Wersja jednoczynnikowa
+
+Funkcja `aov` jest używana do jednoczynnikowej i wieloczynnikowej analizy wariancji.
+
+Wykonujemy testy istotności następująco:
+
+* $H_0$ : wszystkie średnie są równe.
+* $H_1$ : co najmniej jedna ze średnich jest różna od innych.
+
+Załadujmy sobie ramkę danych:
+
+```{r}
+dane<-PlantGrowth
+head(dane)
+levels(dane$group)
+```
+
+Policzmy dla każdej grupy średnią i odchylenie standardowe:
+
+```{r}
+library(dplyr)
+group_by(dane, group) %>%
+  summarise(
+    count = n(),
+    mean = mean(weight, na.rm = TRUE),
+    sd = sd(weight, na.rm = TRUE)
+  )
+```
+
+lub ręcznie:
+
+```{r}
+ctrl<-dane[dane$group=="ctrl",]
+mean(ctrl$weight)
+sd(ctrl$weight)     
+trt1<-dane[dane$group=="trt1",]
+mean(trt1$weight)
+sd(trt1$weight) 
+trt2<-dane[dane$group=="trt2",]
+mean(trt2$weight)
+sd(trt2$weight) 
+```
+
+Spójrzmy na wykres:
+
+```{r}
+boxplot(weight~group,data=dane)
+```
+
+Przeprowadźmy analizę wariancji w R za pomocą `aov`:
+
+```{r}
+model <- aov(weight ~ group, data = dane)
+summary(model)
+```
+
+Obliczmy to ręcznie:
+
+```{r}
+y<-dane$weight
+ym<-mean(y)
+yh<-model$fitted.values
+ssm<-sum((yh-ym)^2)
+ssm
+ssr<-sum((y-yh)^2)
+ssr
+```
+
+Liczba stopni swobody:
+
+* przy grupie - liczba grup minus 1
+* przy resztach - liczba obserwacji minus liczba grup
+
+```{r}
+msm<-ssm/2
+msm
+mse<-ssr/27
+mse
+```
+
+Statystyka $F= \frac{MSM}{MSE}$.
+
+```{r}
+f<-msm/mse
+f
+```
+
+Obliczamy kwantyl
+
+```{r}
+qf(0.95, 2,27)
+```
+
+Jeśli wartość statystyki jest większa kwantylowi, odrzucamy hipotezę zerową. W przeciwnym wypadku przyjmujemy hipotezę zerową.
+
+```{r}
+p<-1-pf(f, 2,27)
+p
+```
+
+W naszym wypadku stwierdzamy, że skoro $p$ jest mniejsze niż $0,05$, to istenieją wystarczając różnice między średnimi w grupach.
+
+Na koniec wykresy:
+
+```{r}
+plot(model)
+```
+
+## Porównanie parami
+
+W naszym przypadku dotychczas dowiedzieliśmy się, że są różnice pomiędzy średnimi, ale nie mam informacji w której grupie występuje różnica.
+
+Wykorzystamy: **Tukey Honest Significant Differences**.
+
+```{r}
+TukeyHSD(model)
+```
+
+Pierwsza kolumna to różnice pomiędzy odpowiednimi średnimi. Muszą być większe od $HSD$.
+
+```{r}
+q<-qtukey(0.95,3,27)
+hsd <- q * sqrt(mse / 10)
+hsd
+```
+
+Aby różnice było można uznać za wiarygodne, musi zachodzić $\left|Y_1 - Y_2\right| \geq HSD$. Wyjaśnienie `q` - [link](https://en.wikipedia.org/wiki/Tukey's_range_test).
+
+Przedziały ufności są wyznaczonę metodą Tukeya-Kramera.
+
+$$\overline{x}_i - \overline{x}_j \pm q \sqrt{\left(\frac{MSE}{2}\right) \left(\frac{1}{n_i} + \frac{1}{n_j}\right)}$$
+gdzie $q$ - odpowiedni kwantyl, $n_i$ - liczebność odpowiedniej grupy.
+
+```{r}
+mean(trt1$weight)-mean(ctrl$weight) + q * sqrt(mse / 2 * (2 / 10))
+mean(trt1$weight)-mean(ctrl$weight) - q * sqrt(mse / 2 * (2 / 10))
+mean(trt2$weight)-mean(ctrl$weight) + q * sqrt(mse / 2 * (2 / 10))
+mean(trt2$weight)-mean(ctrl$weight) - q * sqrt(mse / 2 * (2 / 10))
+mean(trt2$weight)-mean(trt1$weight) + q * sqrt(mse / 2 * (2 / 10))
+mean(trt2$weight)-mean(trt1$weight) - q * sqrt(mse / 2 * (2 / 10))
+```
+
+By wyjaśnić skorygowane $p$, wykonamy obliczenia:
+
+```{r}
+center.trt1.ctrl <- (mean(trt1$weight)-mean(ctrl$weight))/sqrt(mse/10)  
+ptukey(abs(center.trt1.ctrl), 3, 27, lower.tail=FALSE)
+center.trt2.ctrl <- (mean(trt2$weight)-mean(ctrl$weight))/sqrt(mse/10)  
+ptukey(abs(center.trt2.ctrl), 3, 27, lower.tail=FALSE)
+center.trt2.trt1 <- (mean(trt2$weight)-mean(trt1$weight))/sqrt(mse/10)  
+ptukey(abs(center.trt2.trt1), 3, 27, lower.tail=FALSE)
+```
+
+## Wersja dwuczynnikowa
+
+Ramka `ToothGrowth` opisuje długość odontoblaststów (komórek produkujących zębinę) u świnek morskich. Zwierzęta otrzymywały witaminę C w dwóch postaciach (OJ - sok pomarańczowy, VC - kwas askorbinowy, zmienna `supp`). Zmienna `dose` zawiera informację o dawce.
+
+Kod do samodzielnego przeanalizowania:
+
+```{r}
+dane2 <- ToothGrowth
+dane2$dose <- factor(dane2$dose, 
+                  levels = c(0.5, 1, 2),
+                  labels = c("D0.5", "D1", "D2"))
+boxplot(len ~ supp * dose, data=dane2, frame = FALSE, 
+        col = c("royalblue", "yellow"), ylab="Tooth Length")
+model2<- aov(len ~ supp + dose, data = dane2)
+summary(model2)
+model3 <- aov(len ~ supp * dose, data = dane2)
+summary(model3)
+model4 <- aov(len ~ supp + dose + supp:dose, data = dane2)
+summary(model4)
+TukeyHSD(model3, "dose")
+TukeyHSD(model3)
+```
+
+
+# Ćwiczenie
+
+1. Załaduj w R poniższą ramkę danych:
+
+```{r}
+delivery.df = data.frame(
+  Service = c(rep("Carrier 1", 15), rep("Carrier 2", 15),
+    rep("Carrier 3", 15)),
+  Destination = c(rep(c("Office 1", "Office 2", "Office 3",
+    "Office 4", "Office 5"), 9)),
+  Time = c(15.23, 14.32, 14.77, 15.12, 14.05,
+  15.48, 14.13, 14.46, 15.62, 14.23, 15.19, 14.67, 14.48, 15.34, 14.22,
+  16.66, 16.27, 16.35, 16.93, 15.05, 16.98, 16.43, 15.95, 16.73, 15.62,
+  16.53, 16.26, 15.69, 16.97, 15.37, 17.12, 16.65, 15.73, 17.77, 15.52,
+  16.15, 16.86, 15.18, 17.96, 15.26, 16.36, 16.44, 14.82, 17.62, 15.04)
+)
+```
+
+Przeprowadź analizę `Time ~ Destination*Service`.
+
+2. Przeprowadź analizę dla zmiennych z ramki `marketing`. *Czy jest sens?*
+</div>
+

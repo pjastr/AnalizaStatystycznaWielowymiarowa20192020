@@ -1,0 +1,53 @@
+---
+title: "Dzień 2 - Model nieliniowy - nls"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 5
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+---
+<style type="text/css">
+.title {
+  display: none;
+}
+
+.table {
+    width:70%;
+}
+
+#getting-started img {
+  margin-right: 10px;
+}
+
+</style>
+
+
+
+# Model nieliniowy - nls
+
+
+## Wersja jednowymiarowa
+
+```{r}
+x<-seq(0,50,1)
+y<-((runif(1,10,20)*x)/(runif(1,0,10)+x))+rnorm(51,0,1)
+model<-nls(y~a*x/(b+x),start = list(a = 1,b = 3))
+summary(model)
+plot(x,y)
+lines(x,predict(model),lty=2,col="red",lwd=3)
+```
+
+## Wersja wielowymiarowa
+
+```{r}
+n <- 1000      
+x1 <- runif(n, min = 0, max = 100)
+x2 <- runif(n, min = 0, max = 100)
+y<-5*x1/(45+x2)+rnorm(n, sd = 3)
+model2<-nls(y~b1*x1/(b2+x2),start = list(b1 = 1,b2 = 2))
+summary(model2)
+```
+</div>
+

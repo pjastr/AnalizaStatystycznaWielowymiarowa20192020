@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Dzień 2 - Analiza wariancji - aov</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Analiza statystyczna wielowymiarowa</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Strona główna</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Dzień 1
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="sprawyorganizacyjne.html">Sprawy organizacyjne</a>
+    </li>
+    <li>
+      <a href="regresjawielowymiarowa.html">Regresja wielowymiarowa</a>
+    </li>
+    <li>
+      <a href="modelliniowy.html">Model liniowy</a>
+    </li>
+    <li>
+      <a href="modelliniowycw.html">Model liniowy - ćw.</a>
+    </li>
+    <li>
+      <a href="modelliniowygrafika.html">Model liniowy - grafika</a>
+    </li>
+    <li>
+      <a href="alternatywnemodeleliniowe.html">Alternatywne modele liniowe</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Dzień 2
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="modelliniowyprognozowanie.html">Model liniowy - prognozowanie</a>
+    </li>
+    <li>
+      <a href="modelnieliniowylm.html">Model nieliniowy - lm</a>
+    </li>
+    <li>
+      <a href="modelnieliniowynls.html">Model nieliniowy - nls</a>
+    </li>
+    <li>
+      <a href="regresjacw.html">Regresja - ćw</a>
+    </li>
+    <li>
+      <a href="analizawariancji.html">Analiza wariancji</a>
+    </li>
+    <li>
+      <a href="analizawariancjiaov.html">Analiza wariancji - aov</a>
+    </li>
+    <li>
+      <a href="tablicaanalizywariancjianova.html">Tablica analizy wariancji - anova</a>
+    </li>
+    <li>
+      <a href="curvefitting.html">Curve fitting</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Dzień 2 - Analiza wariancji - aov</h1>
+
+</div>
+
+
+<style type="text/css">
+.title {
+  display: none;
+}
+
+.table {
+    width:70%;
+}
+
+#getting-started img {
+  margin-right: 10px;
+}
+
+</style>
+<div id="analiza-wariancji---aov" class="section level1">
+<h1>Analiza wariancji - aov</h1>
+<div id="wersja-jednoczynnikowa" class="section level2">
+<h2>Wersja jednoczynnikowa</h2>
+<p>Funkcja <code>aov</code> jest używana do jednoczynnikowej i wieloczynnikowej analizy wariancji.</p>
+<p>Wykonujemy testy istotności następująco:</p>
+<ul>
+<li><span class="math inline">\(H_0\)</span> : wszystkie średnie są równe.</li>
+<li><span class="math inline">\(H_1\)</span> : co najmniej jedna ze średnich jest różna od innych.</li>
+</ul>
+<p>Załadujmy sobie ramkę danych:</p>
+<pre class="r"><code>dane&lt;-PlantGrowth
+head(dane)</code></pre>
+<pre><code>##   weight group
+## 1   4.17  ctrl
+## 2   5.58  ctrl
+## 3   5.18  ctrl
+## 4   6.11  ctrl
+## 5   4.50  ctrl
+## 6   4.61  ctrl</code></pre>
+<pre class="r"><code>levels(dane$group)</code></pre>
+<pre><code>## [1] &quot;ctrl&quot; &quot;trt1&quot; &quot;trt2&quot;</code></pre>
+<p>Policzmy dla każdej grupy średnią i odchylenie standardowe:</p>
+<pre class="r"><code>library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>group_by(dane, group) %&gt;%
+  summarise(
+    count = n(),
+    mean = mean(weight, na.rm = TRUE),
+    sd = sd(weight, na.rm = TRUE)
+  )</code></pre>
+<pre><code>## # A tibble: 3 x 4
+##   group count  mean    sd
+##   &lt;fct&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 ctrl     10  5.03 0.583
+## 2 trt1     10  4.66 0.794
+## 3 trt2     10  5.53 0.443</code></pre>
+<p>lub ręcznie:</p>
+<pre class="r"><code>ctrl&lt;-dane[dane$group==&quot;ctrl&quot;,]
+mean(ctrl$weight)</code></pre>
+<pre><code>## [1] 5.032</code></pre>
+<pre class="r"><code>sd(ctrl$weight)     </code></pre>
+<pre><code>## [1] 0.5830914</code></pre>
+<pre class="r"><code>trt1&lt;-dane[dane$group==&quot;trt1&quot;,]
+mean(trt1$weight)</code></pre>
+<pre><code>## [1] 4.661</code></pre>
+<pre class="r"><code>sd(trt1$weight) </code></pre>
+<pre><code>## [1] 0.7936757</code></pre>
+<pre class="r"><code>trt2&lt;-dane[dane$group==&quot;trt2&quot;,]
+mean(trt2$weight)</code></pre>
+<pre><code>## [1] 5.526</code></pre>
+<pre class="r"><code>sd(trt2$weight) </code></pre>
+<pre><code>## [1] 0.4425733</code></pre>
+<p>Spójrzmy na wykres:</p>
+<pre class="r"><code>boxplot(weight~group,data=dane)</code></pre>
+<p><img src="analizawariancjiaov_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Przeprowadźmy analizę wariancji w R za pomocą <code>aov</code>:</p>
+<pre class="r"><code>model &lt;- aov(weight ~ group, data = dane)
+summary(model)</code></pre>
+<pre><code>##             Df Sum Sq Mean Sq F value Pr(&gt;F)  
+## group        2  3.766  1.8832   4.846 0.0159 *
+## Residuals   27 10.492  0.3886                 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Obliczmy to ręcznie:</p>
+<pre class="r"><code>y&lt;-dane$weight
+ym&lt;-mean(y)
+yh&lt;-model$fitted.values
+ssm&lt;-sum((yh-ym)^2)
+ssm</code></pre>
+<pre><code>## [1] 3.76634</code></pre>
+<pre class="r"><code>ssr&lt;-sum((y-yh)^2)
+ssr</code></pre>
+<pre><code>## [1] 10.49209</code></pre>
+<p>Liczba stopni swobody:</p>
+<ul>
+<li>przy grupie - liczba grup minus 1</li>
+<li>przy resztach - liczba obserwacji minus liczba grup</li>
+</ul>
+<pre class="r"><code>msm&lt;-ssm/2
+msm</code></pre>
+<pre><code>## [1] 1.88317</code></pre>
+<pre class="r"><code>mse&lt;-ssr/27
+mse</code></pre>
+<pre><code>## [1] 0.3885959</code></pre>
+<p>Statystyka <span class="math inline">\(F= \frac{MSM}{MSE}\)</span>.</p>
+<pre class="r"><code>f&lt;-msm/mse
+f</code></pre>
+<pre><code>## [1] 4.846088</code></pre>
+<p>Obliczamy kwantyl</p>
+<pre class="r"><code>qf(0.95, 2,27)</code></pre>
+<pre><code>## [1] 3.354131</code></pre>
+<p>Jeśli wartość statystyki jest większa kwantylowi, odrzucamy hipotezę zerową. W przeciwnym wypadku przyjmujemy hipotezę zerową.</p>
+<pre class="r"><code>p&lt;-1-pf(f, 2,27)
+p</code></pre>
+<pre><code>## [1] 0.01590996</code></pre>
+<p>W naszym wypadku stwierdzamy, że skoro <span class="math inline">\(p\)</span> jest mniejsze niż <span class="math inline">\(0,05\)</span>, to istenieją wystarczając różnice między średnimi w grupach.</p>
+<p>Na koniec wykresy:</p>
+<pre class="r"><code>plot(model)</code></pre>
+<p><img src="analizawariancjiaov_files/figure-html/unnamed-chunk-11-1.png" width="672" /><img src="analizawariancjiaov_files/figure-html/unnamed-chunk-11-2.png" width="672" /><img src="analizawariancjiaov_files/figure-html/unnamed-chunk-11-3.png" width="672" /><img src="analizawariancjiaov_files/figure-html/unnamed-chunk-11-4.png" width="672" /></p>
+</div>
+<div id="porównanie-parami" class="section level2">
+<h2>Porównanie parami</h2>
+<p>W naszym przypadku dotychczas dowiedzieliśmy się, że są różnice pomiędzy średnimi, ale nie mam informacji w której grupie występuje różnica.</p>
+<p>Wykorzystamy: <strong>Tukey Honest Significant Differences</strong>.</p>
+<pre class="r"><code>TukeyHSD(model)</code></pre>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = weight ~ group, data = dane)
+## 
+## $group
+##             diff        lwr       upr     p adj
+## trt1-ctrl -0.371 -1.0622161 0.3202161 0.3908711
+## trt2-ctrl  0.494 -0.1972161 1.1852161 0.1979960
+## trt2-trt1  0.865  0.1737839 1.5562161 0.0120064</code></pre>
+<p>Pierwsza kolumna to różnice pomiędzy odpowiednimi średnimi. Muszą być większe od <span class="math inline">\(HSD\)</span>.</p>
+<pre class="r"><code>q&lt;-qtukey(0.95,3,27)
+hsd &lt;- q * sqrt(mse / 10)
+hsd</code></pre>
+<pre><code>## [1] 0.6912161</code></pre>
+<p>Aby różnice było można uznać za wiarygodne, musi zachodzić <span class="math inline">\(\left|Y_1 - Y_2\right| \geq HSD\)</span>. Wyjaśnienie <code>q</code> - <a href="https://en.wikipedia.org/wiki/Tukey&#39;s_range_test">link</a>.</p>
+<p>Przedziały ufności są wyznaczonę metodą Tukeya-Kramera.</p>
+<p><span class="math display">\[\overline{x}_i - \overline{x}_j \pm q \sqrt{\left(\frac{MSE}{2}\right) \left(\frac{1}{n_i} + \frac{1}{n_j}\right)}\]</span> gdzie <span class="math inline">\(q\)</span> - odpowiedni kwantyl, <span class="math inline">\(n_i\)</span> - liczebność odpowiedniej grupy.</p>
+<pre class="r"><code>mean(trt1$weight)-mean(ctrl$weight) + q * sqrt(mse / 2 * (2 / 10))</code></pre>
+<pre><code>## [1] 0.3202161</code></pre>
+<pre class="r"><code>mean(trt1$weight)-mean(ctrl$weight) - q * sqrt(mse / 2 * (2 / 10))</code></pre>
+<pre><code>## [1] -1.062216</code></pre>
+<pre class="r"><code>mean(trt2$weight)-mean(ctrl$weight) + q * sqrt(mse / 2 * (2 / 10))</code></pre>
+<pre><code>## [1] 1.185216</code></pre>
+<pre class="r"><code>mean(trt2$weight)-mean(ctrl$weight) - q * sqrt(mse / 2 * (2 / 10))</code></pre>
+<pre><code>## [1] -0.1972161</code></pre>
+<pre class="r"><code>mean(trt2$weight)-mean(trt1$weight) + q * sqrt(mse / 2 * (2 / 10))</code></pre>
+<pre><code>## [1] 1.556216</code></pre>
+<pre class="r"><code>mean(trt2$weight)-mean(trt1$weight) - q * sqrt(mse / 2 * (2 / 10))</code></pre>
+<pre><code>## [1] 0.1737839</code></pre>
+<p>By wyjaśnić skorygowane <span class="math inline">\(p\)</span>, wykonamy obliczenia:</p>
+<pre class="r"><code>center.trt1.ctrl &lt;- (mean(trt1$weight)-mean(ctrl$weight))/sqrt(mse/10)  
+ptukey(abs(center.trt1.ctrl), 3, 27, lower.tail=FALSE)</code></pre>
+<pre><code>## [1] 0.3908711</code></pre>
+<pre class="r"><code>center.trt2.ctrl &lt;- (mean(trt2$weight)-mean(ctrl$weight))/sqrt(mse/10)  
+ptukey(abs(center.trt2.ctrl), 3, 27, lower.tail=FALSE)</code></pre>
+<pre><code>## [1] 0.197996</code></pre>
+<pre class="r"><code>center.trt2.trt1 &lt;- (mean(trt2$weight)-mean(trt1$weight))/sqrt(mse/10)  
+ptukey(abs(center.trt2.trt1), 3, 27, lower.tail=FALSE)</code></pre>
+<pre><code>## [1] 0.01200642</code></pre>
+</div>
+<div id="wersja-dwuczynnikowa" class="section level2">
+<h2>Wersja dwuczynnikowa</h2>
+<p>Ramka <code>ToothGrowth</code> opisuje długość odontoblaststów (komórek produkujących zębinę) u świnek morskich. Zwierzęta otrzymywały witaminę C w dwóch postaciach (OJ - sok pomarańczowy, VC - kwas askorbinowy, zmienna <code>supp</code>). Zmienna <code>dose</code> zawiera informację o dawce.</p>
+<p>Kod do samodzielnego przeanalizowania:</p>
+<pre class="r"><code>dane2 &lt;- ToothGrowth
+dane2$dose &lt;- factor(dane2$dose, 
+                  levels = c(0.5, 1, 2),
+                  labels = c(&quot;D0.5&quot;, &quot;D1&quot;, &quot;D2&quot;))
+boxplot(len ~ supp * dose, data=dane2, frame = FALSE, 
+        col = c(&quot;royalblue&quot;, &quot;yellow&quot;), ylab=&quot;Tooth Length&quot;)</code></pre>
+<p><img src="analizawariancjiaov_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<pre class="r"><code>model2&lt;- aov(len ~ supp + dose, data = dane2)
+summary(model2)</code></pre>
+<pre><code>##             Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+## supp         1  205.4   205.4   14.02 0.000429 ***
+## dose         2 2426.4  1213.2   82.81  &lt; 2e-16 ***
+## Residuals   56  820.4    14.7                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>model3 &lt;- aov(len ~ supp * dose, data = dane2)
+summary(model3)</code></pre>
+<pre><code>##             Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+## supp         1  205.4   205.4  15.572 0.000231 ***
+## dose         2 2426.4  1213.2  92.000  &lt; 2e-16 ***
+## supp:dose    2  108.3    54.2   4.107 0.021860 *  
+## Residuals   54  712.1    13.2                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>model4 &lt;- aov(len ~ supp + dose + supp:dose, data = dane2)
+summary(model4)</code></pre>
+<pre><code>##             Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+## supp         1  205.4   205.4  15.572 0.000231 ***
+## dose         2 2426.4  1213.2  92.000  &lt; 2e-16 ***
+## supp:dose    2  108.3    54.2   4.107 0.021860 *  
+## Residuals   54  712.1    13.2                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>TukeyHSD(model3, &quot;dose&quot;)</code></pre>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = len ~ supp * dose, data = dane2)
+## 
+## $dose
+##           diff       lwr       upr   p adj
+## D1-D0.5  9.130  6.362488 11.897512 0.0e+00
+## D2-D0.5 15.495 12.727488 18.262512 0.0e+00
+## D2-D1    6.365  3.597488  9.132512 2.7e-06</code></pre>
+<pre class="r"><code>TukeyHSD(model3)</code></pre>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = len ~ supp * dose, data = dane2)
+## 
+## $supp
+##       diff       lwr       upr     p adj
+## VC-OJ -3.7 -5.579828 -1.820172 0.0002312
+## 
+## $dose
+##           diff       lwr       upr   p adj
+## D1-D0.5  9.130  6.362488 11.897512 0.0e+00
+## D2-D0.5 15.495 12.727488 18.262512 0.0e+00
+## D2-D1    6.365  3.597488  9.132512 2.7e-06
+## 
+## $`supp:dose`
+##                  diff        lwr        upr     p adj
+## VC:D0.5-OJ:D0.5 -5.25 -10.048124 -0.4518762 0.0242521
+## OJ:D1-OJ:D0.5    9.47   4.671876 14.2681238 0.0000046
+## VC:D1-OJ:D0.5    3.54  -1.258124  8.3381238 0.2640208
+## OJ:D2-OJ:D0.5   12.83   8.031876 17.6281238 0.0000000
+## VC:D2-OJ:D0.5   12.91   8.111876 17.7081238 0.0000000
+## OJ:D1-VC:D0.5   14.72   9.921876 19.5181238 0.0000000
+## VC:D1-VC:D0.5    8.79   3.991876 13.5881238 0.0000210
+## OJ:D2-VC:D0.5   18.08  13.281876 22.8781238 0.0000000
+## VC:D2-VC:D0.5   18.16  13.361876 22.9581238 0.0000000
+## VC:D1-OJ:D1     -5.93 -10.728124 -1.1318762 0.0073930
+## OJ:D2-OJ:D1      3.36  -1.438124  8.1581238 0.3187361
+## VC:D2-OJ:D1      3.44  -1.358124  8.2381238 0.2936430
+## OJ:D2-VC:D1      9.29   4.491876 14.0881238 0.0000069
+## VC:D2-VC:D1      9.37   4.571876 14.1681238 0.0000058
+## VC:D2-OJ:D2      0.08  -4.718124  4.8781238 1.0000000</code></pre>
+</div>
+</div>
+<div id="ćwiczenie" class="section level1">
+<h1>Ćwiczenie</h1>
+<ol style="list-style-type: decimal">
+<li>Załaduj w R poniższą ramkę danych:</li>
+</ol>
+<pre class="r"><code>delivery.df = data.frame(
+  Service = c(rep(&quot;Carrier 1&quot;, 15), rep(&quot;Carrier 2&quot;, 15),
+    rep(&quot;Carrier 3&quot;, 15)),
+  Destination = c(rep(c(&quot;Office 1&quot;, &quot;Office 2&quot;, &quot;Office 3&quot;,
+    &quot;Office 4&quot;, &quot;Office 5&quot;), 9)),
+  Time = c(15.23, 14.32, 14.77, 15.12, 14.05,
+  15.48, 14.13, 14.46, 15.62, 14.23, 15.19, 14.67, 14.48, 15.34, 14.22,
+  16.66, 16.27, 16.35, 16.93, 15.05, 16.98, 16.43, 15.95, 16.73, 15.62,
+  16.53, 16.26, 15.69, 16.97, 15.37, 17.12, 16.65, 15.73, 17.77, 15.52,
+  16.15, 16.86, 15.18, 17.96, 15.26, 16.36, 16.44, 14.82, 17.62, 15.04)
+)</code></pre>
+<p>Przeprowadź analizę <code>Time ~ Destination*Service</code>.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>Przeprowadź analizę dla zmiennych z ramki <code>marketing</code>. <em>Czy jest sens?</em>
+</div></li>
+</ol>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4,h5",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

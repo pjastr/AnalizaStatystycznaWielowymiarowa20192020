@@ -30,7 +30,7 @@ output:
 
 * Liczba godzin: 6 godz. (wykład) + 8 godz. (ćwiczenia).
 * Liczba punktów ECTS: 2.
-* Forma zaliczenia: zaliczenie na ocenę.
+* Forma zaliczenia: zaliczenie.
 * Konsultacje: informacje są dostępne są na stronie www w domenie wmii.
 
 ## Treści zajęć
