@@ -28,7 +28,7 @@ output:
 # Ćwiczenie
 
 
-Załaduj do R poniższą ramkę danych:
+1. Załaduj do R poniższą ramkę danych:
 
 ```r
 load(url("https://github.com/pjastr/ASW/raw/master/cw3.rda"))
@@ -36,5 +36,13 @@ load(url("https://github.com/pjastr/ASW/raw/master/cw3.rda"))
 
 W ramce są zawarte informacje o maksymalnej kwocie kredytu (pierwsza kolumna) względem pozostałych cech. Wykorzystaj metody regresji liniowej, aby wybrać najbardziej dopasowany model.
 
-</div>
+
+2. Załaduj do R poniższą ramkę danych:
+
+```r
+load(url("https://github.com/pjastr/ASW/raw/master/fish.rda"))
+```
+
+W ramce są zawarte informacje o długości pewnego gatunku ryb względem jego wieku. Wykorzystaj metody regresji wielomianowej, aby wybrać najbardziej dopasowany model.
+
 

@@ -30,4 +30,8 @@ output:
 
 Zestaw C - [docx](ZestawC.docx), [pdf](ZestawC.pdf)
 
+Formularz do przesłania odpowiedzi:
+
+https://docs.google.com/forms/d/e/1FAIpQLSdlKxwgb4G_fS__6xlWzn6vTWkRcivkU97VnVxq8iPxAatnBQ/viewform?usp=sf_link
+
 
