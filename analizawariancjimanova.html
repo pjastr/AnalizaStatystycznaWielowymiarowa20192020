@@ -11,7 +11,7 @@
 
 
 
-<title>Dzień 3 - Curve fitting</title>
+<title>Dzień 3 - Analiza wariancji - manova</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -446,7 +446,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Dzień 3 - Curve fitting</h1>
+<h1 class="title toc-ignore">Dzień 3 - Analiza wariancji - manova</h1>
 
 </div>
 
@@ -465,129 +465,33 @@ div.tocify {
 }
 
 </style>
-<div id="curve-fitting" class="section level1">
-<h1>Curve fitting</h1>
-<p>“Curve fitting” (dopasowanie krzywej) to zadanie sprowadzająca się do szukania najbardziej dopasowanego modelu.</p>
-<p>W przykładach ograniczymy się do jednej zmiennej objaśniającej, jednak można to w dosyć prosty sposób zastosować również przy kilku zmiennych objaśniających.</p>
-<pre class="r"><code>x &lt;- c(32,64,96,118,126,144,152.5,158)
-y &lt;- c(99.5,104.8,108.5,100,86,64,35.3,15)
-plot(x,y, pch=20)</code></pre>
-<p><img src="curvefitting_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
-<p>Stwórzmy kilka modeli i zrób wykresy teoretycznych wartości z modelu:</p>
-<pre class="r"><code>model1  &lt;- lm(y~x)
-model2 &lt;- lm(y~poly(x,2,raw=TRUE))
-model3 &lt;- lm(y~poly(x,3,raw=TRUE))
-model4 &lt;- lm(y~poly(x,4,raw=TRUE))
-x.axis &lt;- seq(30,160, length=50)
-plot(x,y,pch=20,ylim=c(0,150))
-lines(x.axis, predict(model1,data.frame(x=x.axis)), col=&quot;red&quot;)
-lines(x.axis, predict(model2,data.frame(x=x.axis)), col=&quot;green&quot;)
-lines(x.axis, predict(model3,data.frame(x=x.axis)), col=&quot;blue&quot;)
-lines(x.axis, predict(model4,data.frame(x=x.axis)), col=&quot;purple&quot;)</code></pre>
-<p><img src="curvefitting_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<p>Sprawdźmy <span class="math inline">\(R^2\)</span>:</p>
-<pre class="r"><code>summary(model1)$r.squared</code></pre>
-<pre><code>## [1] 0.5759157</code></pre>
-<pre class="r"><code>summary(model2)$r.squared</code></pre>
-<pre><code>## [1] 0.9473663</code></pre>
-<pre class="r"><code>summary(model3)$r.squared</code></pre>
-<pre><code>## [1] 0.9923689</code></pre>
-<pre class="r"><code>summary(model4)$r.squared</code></pre>
-<pre><code>## [1] 0.9943288</code></pre>
-<p>Sprawdźmy skorygowane <span class="math inline">\(\overline{R}^2\)</span>:</p>
-<pre class="r"><code>summary(model1)$adj.r.squared</code></pre>
-<pre><code>## [1] 0.505235</code></pre>
-<pre class="r"><code>summary(model2)$adj.r.squared</code></pre>
-<pre><code>## [1] 0.9263129</code></pre>
-<pre class="r"><code>summary(model3)$adj.r.squared</code></pre>
-<pre><code>## [1] 0.9866455</code></pre>
-<pre class="r"><code>summary(model4)$adj.r.squared</code></pre>
-<pre><code>## [1] 0.9867671</code></pre>
-<p>Co nam pokaże <code>anova</code>?</p>
-<pre class="r"><code>anova(model1,model2,model4,model3)</code></pre>
-<pre><code>## Analysis of Variance Table
-## 
-## Model 1: y ~ x
-## Model 2: y ~ poly(x, 2, raw = TRUE)
-## Model 3: y ~ poly(x, 4, raw = TRUE)
-## Model 4: y ~ poly(x, 3, raw = TRUE)
-##   Res.Df    RSS Df Sum of Sq        F    Pr(&gt;F)    
-## 1      6 3660.8                                    
-## 2      5  454.3  1    3206.4 196.4919 0.0007862 ***
-## 3      3   49.0  2     405.4  12.4212 0.0353688 *  
-## 4      4   65.9 -1     -16.9   1.0368 0.3835381    
+<div id="analiza-wariancji---manova" class="section level1">
+<h1>Analiza wariancji - manova</h1>
+<p>Do tej pory rozważaliśmy sytuację, kiedy zmienna zależna była jedna, a zmiennych niezależnych było kilka.</p>
+<p>Odwróćmy sytuację. Mamy kilka zmiennych zależnych i jedną zmienną niezależną.</p>
+<p>Załadujmy dane:</p>
+<pre class="r"><code>dane&lt;-iris
+head(iris)</code></pre>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          5.1         3.5          1.4         0.2  setosa
+## 2          4.9         3.0          1.4         0.2  setosa
+## 3          4.7         3.2          1.3         0.2  setosa
+## 4          4.6         3.1          1.5         0.2  setosa
+## 5          5.0         3.6          1.4         0.2  setosa
+## 6          5.4         3.9          1.7         0.4  setosa</code></pre>
+<p>Spójrzmy na rysunek:</p>
+<p><img src="iris.png" /></p>
+<p><sub><sup><a href="https://melindahiggins2000.github.io/N741UnsupervisedLearning/UnsupervisedLearning.html" class="uri">https://melindahiggins2000.github.io/N741UnsupervisedLearning/UnsupervisedLearning.html</a></sup></sub></p>
+<pre class="r"><code>sepl &lt;- iris$Sepal.Length
+petl &lt;- iris$Petal.Length
+model &lt;- manova(cbind(Sepal.Length, Petal.Length) ~ Species, data = iris)
+summary(model)</code></pre>
+<pre><code>##            Df Pillai approx F num Df den Df    Pr(&gt;F)    
+## Species     2 0.9885   71.829      4    294 &lt; 2.2e-16 ***
+## Residuals 147                                            
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Dodajmy model nieliniowy.</p>
-<pre class="r"><code>model5&lt;-nls(y~poly(x,5,raw=TRUE)%*% coef, start = list(coef = c(a = 1, b = 2, c=2, d=4, e=2)))
-anova(model4,model5)</code></pre>
-<pre><code>## Warning in anova.lmlist(object, ...): models with response &#39;&quot;NULL&quot;&#39; removed
-## because response differs from model 1</code></pre>
-<pre><code>## Analysis of Variance Table
-## 
-## Response: y
-##                        Df Sum Sq Mean Sq F value   Pr(&gt;F)   
-## poly(x, 4, raw = TRUE)  4 8583.2 2145.81   131.5 0.001064 **
-## Residuals               3   49.0   16.32                    
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Musimy porównywać w większości wypadkóW modele “tego samego typu”:</p>
-<pre class="r"><code>model6&lt;-nls(y~poly(x,4,raw=TRUE)%*% coef, start = list(coef = c(a = 1, b = 2, c=2, d=1)))
-anova(model6, model5)</code></pre>
-<pre><code>## Analysis of Variance Table
-## 
-## Model 1: y ~ poly(x, 4, raw = TRUE) %*% coef
-## Model 2: y ~ poly(x, 5, raw = TRUE) %*% coef
-##   Res.Df Res.Sum Sq Df Sum Sq F value Pr(&gt;F)
-## 1      4     79.383                         
-## 2      3     60.188  1 19.195  0.9568 0.4001</code></pre>
-<p>Jak zatem porównywać? Pierwsza opcja to ręczne liczenie <span class="math inline">\(R^2\)</span>.</p>
-<pre class="r"><code>ym&lt;-mean(y)
-yh&lt;-fitted(model4)
-ssm&lt;-sum((yh-ym)^2)
-sst&lt;-sum((y-ym)^2)
-r2&lt;-ssm/sst
-r2</code></pre>
-<pre><code>## [1] 0.9943288</code></pre>
-<pre class="r"><code>yh&lt;-fitted(model5)
-ssm&lt;-sum((yh-ym)^2)
-sst&lt;-sum((y-ym)^2)
-r2&lt;-ssm/sst
-r2</code></pre>
-<pre><code>## [1] 0.9946821</code></pre>
-<pre class="r"><code>yh&lt;-fitted(model6)
-ssm&lt;-sum((yh-ym)^2)
-sst&lt;-sum((y-ym)^2)
-r2&lt;-ssm/sst
-r2</code></pre>
-<pre><code>## [1] 0.998033</code></pre>
-<p>Zobaczmy wykresy.</p>
-<pre class="r"><code>plot(x,y,pch=20,ylim=c(0,150))
-lines(x.axis, predict(model4,data.frame(x=x.axis)), col=&quot;red&quot;)
-lines(x.axis, predict(model5,data.frame(x=x.axis)), col=&quot;blue&quot;)
-lines(x.axis, predict(model6,data.frame(x=x.axis)), col=&quot;green&quot;)</code></pre>
-<p><img src="curvefitting_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<p>Jak to mierzyć? Możemy sprawdzić tzw. kryterium informacyjne Akaikego (Akaike Information Criterion) - <a href="https://pl.wikipedia.org/wiki/Kryterium_informacyjne_Akaikego">link</a>.</p>
-<pre class="r"><code>AIC(model1)</code></pre>
-<pre><code>## [1] 77.71092</code></pre>
-<pre class="r"><code>AIC(model2)</code></pre>
-<pre><code>## [1] 63.01831</code></pre>
-<pre class="r"><code>AIC(model3)</code></pre>
-<pre><code>## [1] 49.56936</code></pre>
-<pre class="r"><code>AIC(model4)</code></pre>
-<pre><code>## [1] 49.19471</code></pre>
-<pre class="r"><code>AIC(model5)</code></pre>
-<pre><code>## [1] 50.84723</code></pre>
-<pre class="r"><code>AIC(model6)</code></pre>
-<pre><code>## [1] 51.06176</code></pre>
-<div id="ćwiczenie" class="section level2">
-<h2>Ćwiczenie</h2>
-<ol style="list-style-type: decimal">
-<li>Wygenerujmy sobie dane:</li>
-</ol>
-<pre class="r"><code>x&lt;-seq(10,50,1)
-y&lt;-100/x+rnorm(1,sd=2)</code></pre>
-<p>Poszukaj najlepszego modelu.</p>
+<p>Hipoteza zerowa: średnie w poszczególnych grupach są równe. Hipoteza alternatywna: co najmniej jedna średnia jest inna od pozostałych.</p>
 </div>
 </div>
 

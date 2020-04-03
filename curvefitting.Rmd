@@ -1,5 +1,5 @@
 ---
-title: "Dzień 2 - Curve fitting"
+title: "Dzień 3 - Curve fitting"
 output:
   html_document:
     toc: yes

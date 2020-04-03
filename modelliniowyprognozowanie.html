@@ -408,11 +408,29 @@ div.tocify {
     <li>
       <a href="analizawariancjiaov.html">Analiza wariancji - aov</a>
     </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Dzień 3
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="cw3.html">Ćwiczenie</a>
+    </li>
     <li>
       <a href="tablicaanalizywariancjianova.html">Tablica analizy wariancji - anova</a>
     </li>
     <li>
       <a href="curvefitting.html">Curve fitting</a>
+    </li>
+    <li>
+      <a href="analizawariancjimanova.html">Analiza wariancji - manova</a>
+    </li>
+    <li>
+      <a href="miniprojekty.html">Miniprojekty</a>
     </li>
   </ul>
 </li>
@@ -562,22 +580,22 @@ np &lt;- runif(n, min=50, max=144)
 new2&lt;-data.frame( youtube = yt, facebook=fb, newspaper=np )
 pred2p&lt;-predict(model, new2, interval = &quot;prediction&quot;)
 head(pred2p)</code></pre>
-<pre><code>##        fit       lwr      upr
-## 1 13.10518  9.011717 17.19865
-## 2 20.85931 16.715952 25.00266
-## 3 14.13474 10.108548 18.16093
-## 4 11.13396  7.073773 15.19414
-## 5 23.07994 19.027828 27.13206
-## 6 15.84877 11.813201 19.88433</code></pre>
+<pre><code>##        fit      lwr      upr
+## 1 16.22512 12.12604 20.32421
+## 2 16.95523 12.90927 21.00118
+## 3 21.25114 17.20768 25.29460
+## 4 16.42123 12.35614 20.48632
+## 5 17.68513 13.57539 21.79486
+## 6 18.81554 14.76861 22.86248</code></pre>
 <pre class="r"><code>pred2c&lt;-predict(model, new2, interval = &quot;confidence&quot;)
 head(pred2c)</code></pre>
 <pre><code>##        fit      lwr      upr
-## 1 13.10518 12.18577 14.02459
-## 2 20.85931 19.73849 21.98013
-## 3 14.13474 13.58787 14.68160
-## 4 11.13396 10.37636 11.89156
-## 5 23.07994 22.36686 23.79303
-## 6 15.84877 15.23668 16.46085</code></pre>
+## 1 16.22512 15.28102 17.16923
+## 2 16.95523 16.27800 17.63245
+## 3 21.25114 20.58902 21.91327
+## 4 16.42123 15.63775 17.20471
+## 5 17.68513 16.69581 18.67444
+## 6 18.81554 18.13253 19.49856</code></pre>
 <pre class="r"><code>plot(pred2c[,1], ylab=&quot;&quot;, ylim=c(min(pred2p[,2]), max(pred2p[,3])), pch=20)
 lines(pred2c[,2], col=&quot;blue&quot;, lty=2)
 lines(pred2p[,2], col=&quot;red&quot;, lty=3)

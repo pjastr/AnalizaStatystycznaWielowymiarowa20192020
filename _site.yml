@@ -33,7 +33,15 @@ navbar:
           href: analizawariancji.html
         - text: "Analiza wariancji - aov"
           href: analizawariancjiaov.html
+    - text: "Dzień 3"
+      menu:
+        - text: "Ćwiczenie"
+          href: cw3.html
         - text: "Tablica analizy wariancji - anova"
           href: tablicaanalizywariancjianova.html
         - text: "Curve fitting"
           href: curvefitting.html
+        - text: "Analiza wariancji - manova"
+          href: analizawariancjimanova.html
+        - text: "Miniprojekty"
+          href: miniprojekty.html

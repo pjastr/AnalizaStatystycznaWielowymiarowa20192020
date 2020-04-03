@@ -27,7 +27,6 @@ output:
 
 # Analiza wariancji - manova
 
-[Wersja pdf](analizawariancjiamanova.pdf) 
 
 Do tej pory rozważaliśmy sytuację, kiedy zmienna zależna była jedna, a zmiennych niezależnych było kilka. 
 

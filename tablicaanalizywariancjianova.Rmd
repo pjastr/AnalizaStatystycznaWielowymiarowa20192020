@@ -1,5 +1,5 @@
 ---
-title: "Dzień 2 - Tablica analizy wariancji - anova"
+title: "Dzień 3 - Tablica analizy wariancji - anova"
 output:
   html_document:
     toc: yes
@@ -48,7 +48,7 @@ Jak widać, ostatnia kolumna jest taka sama - nie otrzymujemy w przypadku zmienn
 
 ## Zmienne jakościowe objaśniające
 
-Rozważmy przykład z danymi jakościowymi:
+Rozważmy przykład z danymi jakościowymi. Opisa danych: wynagrodzenia na uczelni. `rank` - AssocProf (prof. nadzwyczajny), AsstProf (adiunkt), Prof
 
 ```{r message=FALSE}
 library(car)

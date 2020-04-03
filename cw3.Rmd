@@ -1,0 +1,40 @@
+---
+title: "Dzień 3 - Ćwiczenie"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 5
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+---
+<style type="text/css">
+.title {
+  display: none;
+}
+
+.table {
+    width:70%;
+}
+
+#getting-started img {
+  margin-right: 10px;
+}
+
+</style>
+
+
+
+# Ćwiczenie
+
+
+Załaduj do R poniższą ramkę danych:
+
+```r
+load(url("https://github.com/pjastr/ASW/raw/master/cw3.rda"))
+```
+
+W ramce są zawarte informacje o maksymalnej kwocie kredytu (pierwsza kolumna) względem pozostałych cech. Wykorzystaj metody regresji liniowej, aby wybrać najbardziej dopasowany model.
+
+</div>
+

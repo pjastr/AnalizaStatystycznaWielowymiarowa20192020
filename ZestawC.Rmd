@@ -1,0 +1,49 @@
+---
+title: "Zestaw C"
+output:
+  word_document: default
+  pdf_document: default
+header-includes: \usepackage[polish]{babel}
+---
+
+Imię i nazwisko: .........................................................
+
+1. Załaduj do R następującą ramkę danych:
+
+```r
+load(url("https://github.com/pjastr/ASW/raw/master/zestawC.rda"))
+```
+
+W ramce w kolumnie woda jest poziom wody w pewnym jeziorze. Pozostałe kolumny dotyczą średniej dobowej temperatury, sumy dobowej opadów i wilgotności.
+
+Wiadomo, że poziom wody zależy od pozostałych zmiennych. Dokonaj analizy regresji liniowej. Wypisz poniżej model liniowy, który wg Ciebie jest najlepszy. Krótko uzasadnij na podstawie których parametrów dokonano wyboru.
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
+2. Załaduj do R następującą ramkę danych:
+
+```r
+load(url("https://github.com/pjastr/ASW/raw/master/zestawC2.rda"))
+```
+
+Wiedząc, że zmienna y zależy wielomianowo od x (stopień jest mniejszy lub równy 4), przeprowadź analizę regresji wielomianowej. Wybierz i zapisz poniżej najbardziej dopasowany model. Wypisz parametry najlepszego modelu.
+
+
+
+
+
+
+
+
+
+

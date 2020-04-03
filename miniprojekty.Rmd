@@ -1,0 +1,33 @@
+---
+title: "Dzień 3 - Miniprojekty"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 5
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+---
+<style type="text/css">
+.title {
+  display: none;
+}
+
+.table {
+    width:70%;
+}
+
+#getting-started img {
+  margin-right: 10px;
+}
+
+</style>
+
+
+
+# Miniprojekty
+
+
+Zestaw C - [docx](ZestawC.docx), [pdf](ZestawC.pdf)
+
+
